@@ -42,5 +42,7 @@ func (s *Server) ApplyRoutes() {
 	s.Routes = s.Engine.Group("api")
 	{
 		s.Routes.GET("/ping")
+		s.Routes.POST("/login")
+		s.Routes.POST("/registartion")
 	}
 }
