@@ -1,15 +1,33 @@
 package models
 
+import "time"
+
 type Order struct {
-	Price    float64
-	BaseCols Base
-	Printing Print
+	Base
+	OrderDate *time.Time
+	Fvat      bool
+	Price     float32
+	Payment   Payment
+	Delivery  Delivery
 }
 
 func (o *Order) Delete() error {
+	if handler == nil {
+		return HandlerNotFound
+	}
 	return handler.Delete(o).Error
 }
 
-func (o *Order) Save() error {
-	return handler.Save(o).Error
+func (o *Order) Create() error {
+	if handler == nil {
+		return HandlerNotFound
+	}
+	return handler.Create(o).Error
+}
+
+func (o *Order) FetchById() error {
+	if handler == nil {
+		return HandlerNotFound
+	}
+	return handler.Find(o).Error
 }
