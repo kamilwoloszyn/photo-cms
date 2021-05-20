@@ -2,8 +2,11 @@ package models
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/jinzhu/gorm"
+	"github.com/kamilwoloszyn/photo-cms/configs"
+	"github.com/kamilwoloszyn/photo-cms/pkg/database"
 )
 
 var (
@@ -25,4 +28,26 @@ func GetHandler() *gorm.DB {
 
 func CloseDB(db *gorm.DB) error {
 	return db.Close()
+}
+
+func Connect() error {
+	if handler != nil {
+		return nil
+	}
+	cfg, err := configs.LoadDbConfig()
+	if err != nil {
+		errWrapped := fmt.Sprintf("Cannot load database config: %s", err.Error())
+		return errors.New(errWrapped)
+	}
+	db, err := database.Initialize(*cfg)
+	if err != nil {
+		errWrapped := fmt.Sprintf("Couldn't initialize database: %s", err.Error())
+		return errors.New(errWrapped)
+	}
+	if err := SetHandler(db); err != nil {
+		errWrapped := fmt.Sprintf("Couldn't set handler: %s", err.Error())
+		return errors.New(errWrapped)
+	}
+	return nil
+
 }
