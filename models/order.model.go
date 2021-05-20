@@ -1,14 +1,11 @@
 package models
 
-import "time"
-
 type Order struct {
 	Base
-	OrderDate *time.Time
-	Fvat      bool
-	Price     float32
-	Payment   Payment
-	Delivery  Delivery
+	Fvat     bool
+	Price    float32
+	Payment  Payment
+	Delivery Delivery
 }
 
 func (o *Order) Delete() error {
