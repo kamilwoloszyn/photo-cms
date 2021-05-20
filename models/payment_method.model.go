@@ -3,8 +3,8 @@ package models
 type PaymentMethod struct {
 	Base
 	Name        string
-	Provier     string
-	PostId      string
+	Provider    string
+	PosId       string
 	KeyMd5      string
 	ClientId    string
 	OauthSecret string
