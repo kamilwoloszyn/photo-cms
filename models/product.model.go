@@ -6,7 +6,7 @@ type Product struct {
 	ProductName string
 	Quantity    uint32
 	Category    []Category
-	Images      []Image
+	Image       []Image
 	Customer    []Customer
 	Order       Order
 }
