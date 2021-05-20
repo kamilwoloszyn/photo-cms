@@ -2,9 +2,9 @@ package models
 
 type Image struct {
 	Base
-	Name string
-	Url  string
-	Size uint32
+	Name     string
+	FullPath string
+	Size     uint32
 }
 
 func (i *Image) Create() error {
