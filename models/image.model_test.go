@@ -17,7 +17,7 @@ var _ = Describe("Image Model", func() {
 		image.Delete()
 	})
 
-	Context("Basic CRUD test", func() {
+	Describe("Basic CRUD test", func() {
 		It("Should be stored into db", func() {
 			var obtainedImage models.Image
 			obtainedImage.SetID(image.GetID())
