@@ -8,16 +8,21 @@ import (
 
 var _ = Describe("Option model test", func() {
 
+	var optionVal models.OptionValue
 	var option models.Option
 
 	BeforeEach(func() {
-		option = CreateOption()
+		optionVal = CreateOptionValue()
+		option = CreateOption(&[]models.OptionValue{
+			optionVal,
+		})
 	})
 	AfterEach(func() {
 		option.Delete()
+		optionVal.Delete()
 	})
 
-	Context("Basic crud testing", func() {
+	Describe("Basic crud testing", func() {
 		var obtainedOption models.Option
 		err := obtainedOption.SetID(option.GetID())
 		Expect(err).To(BeNil())
