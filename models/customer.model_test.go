@@ -16,7 +16,7 @@ var _ = Describe("Customer model", func() {
 	AfterEach(func() {
 		customer.Delete()
 	})
-	Context("Crud Basic", func() {
+	Describe("Crud Basic", func() {
 		It("Should be stored into db", func() {
 			var obtainedCustomer models.Customer
 			err := obtainedCustomer.SetID(customer.GetID())
