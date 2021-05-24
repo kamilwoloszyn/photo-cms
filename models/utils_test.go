@@ -66,9 +66,23 @@ func CreateOptionValues() []models.OptionValue {
 	return []models.OptionValue{sampleValue1, sampleValue2, sampleValue3}
 }
 
-func CreateOption() models.Option {
+func CreateOptionValue() models.OptionValue {
+	sampleValue1 := models.OptionValue{
+		Value:      "Yellow",
+		ExtraPrice: 10.0,
+	}
+	if err := sampleValue1.Create(); err != nil {
+		errWrapped := errors.Wrap(err, "Creating Option value1")
+		Fail(errWrapped.Error())
+
+	}
+	return sampleValue1
+}
+
+func CreateOption(opt *[]models.OptionValue) models.Option {
 	sampleOption := models.Option{
-		Name: "Color",
+		Name:          "Color",
+		OptionsValues: *opt,
 	}
 	if err := sampleOption.Create(); err != nil {
 		wrappedErr := errors.Wrap(err, "Creating Option")
