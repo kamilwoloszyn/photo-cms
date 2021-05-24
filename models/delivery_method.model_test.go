@@ -15,7 +15,7 @@ var _ = Describe("DeliveryMethod model", func() {
 	AfterEach(func() {
 		deliveryMethod.Delete()
 	})
-	Context("Basic crud operations", func() {
+	Describe("Basic crud operations", func() {
 		It("Should be stored into db", func() {
 			var obtainedMethod models.DeliveryMethod
 			obtainedMethod.SetID(deliveryMethod.GetID())
