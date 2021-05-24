@@ -14,7 +14,7 @@ var _ = Describe("Category Model", func() {
 	AfterEach(func() {
 		category.Delete()
 	})
-	Context("Crud operations", func() {
+	Describe("Crud operations", func() {
 		It("Should be stored into db", func() {
 			var obtainedCategory models.Category
 			err := obtainedCategory.SetID(category.GetID())
