@@ -21,7 +21,7 @@ var _ = Describe("Payment model", func() {
 		payment.Delete()
 		paymentMethod.Delete()
 	})
-	Context("Basic crud testing", func() {
+	Describe("Basic crud testing", func() {
 		It("Should contain payment in db", func() {
 			var obtainedPayment models.Payment
 			err := obtainedPayment.SetID(payment.GetID())
