@@ -8,7 +8,7 @@ type DeliveryMethod struct {
 
 func (d *DeliveryMethod) Create() error {
 	if handler == nil {
-		return HandlerNotFound
+		return ErrHandlerNotFound
 	}
 	return handler.Create(d).Error
 
@@ -16,14 +16,17 @@ func (d *DeliveryMethod) Create() error {
 
 func (d *DeliveryMethod) Delete() error {
 	if handler == nil {
-		return HandlerNotFound
+		return ErrHandlerNotFound
 	}
 	return handler.Delete(d).Error
 }
 
 func (d *DeliveryMethod) FetchById() error {
 	if handler == nil {
-		return HandlerNotFound
+		return ErrHandlerNotFound
+	}
+	if len(d.ID) == 0 {
+		return ErrIdEmpty
 	}
 	return handler.First(d).Error
 }
