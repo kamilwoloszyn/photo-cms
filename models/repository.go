@@ -10,8 +10,9 @@ import (
 )
 
 var (
-	handler         *gorm.DB
-	HandlerNotFound = errors.New("db is not connected.")
+	handler            *gorm.DB
+	ErrHandlerNotFound = errors.New("db is not connected")
+	ErrIdEmpty         = errors.New("id is required to fetching from model db")
 )
 
 func SetHandler(newHandler *gorm.DB) error {
