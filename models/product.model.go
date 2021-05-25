@@ -13,19 +13,35 @@ type Product struct {
 
 func (p *Product) Create() error {
 	if handler == nil {
-		return HandlerNotFound
+		return ErrHandlerNotFound
 	}
 	return handler.Create(p).Error
 }
 func (p *Product) Delete() error {
 	if handler == nil {
-		return HandlerNotFound
+		return ErrHandlerNotFound
 	}
 	return handler.Delete(p).Error
 }
+func (p *Product) UpdateAll() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	return handler.Save(p).Error
+}
 func (p *Product) FetchByID() error {
 	if handler == nil {
-		return HandlerNotFound
+		return ErrHandlerNotFound
+	}
+	if len(p.ID) == 0 {
+		return ErrIdEmpty
 	}
 	return handler.First(p).Error
+}
+func (p *Product) AssignTo(o *Order) error {
+	if len(o.ID) == 0 {
+		return ErrIdEmpty
+	}
+	p.Order = *o
+	return nil
 }
