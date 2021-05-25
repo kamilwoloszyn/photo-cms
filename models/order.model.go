@@ -10,21 +10,33 @@ type Order struct {
 
 func (o *Order) Delete() error {
 	if handler == nil {
-		return HandlerNotFound
+		return ErrHandlerNotFound
 	}
 	return handler.Delete(o).Error
 }
 
 func (o *Order) Create() error {
 	if handler == nil {
-		return HandlerNotFound
+		return ErrHandlerNotFound
 	}
 	return handler.Create(o).Error
 }
 
 func (o *Order) FetchById() error {
 	if handler == nil {
-		return HandlerNotFound
+		return ErrHandlerNotFound
+	}
+	if len(o.ID) == 0 {
+		return ErrIdEmpty
 	}
 	return handler.Find(o).Error
+}
+
+func (o *Order) AssignTo(p *Product) error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	if len(o.ID) == 0 {
+		return ErrIdEmpty
+	}
 }
