@@ -31,12 +31,3 @@ func (o *Order) FetchById() error {
 	}
 	return handler.Find(o).Error
 }
-
-func (o *Order) AssignTo(p *Product) error {
-	if handler == nil {
-		return ErrHandlerNotFound
-	}
-	if len(o.ID) == 0 {
-		return ErrIdEmpty
-	}
-}
