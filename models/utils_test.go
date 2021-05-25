@@ -101,14 +101,12 @@ func CreateCategory() models.Category {
 	}
 	return sampleCategory
 }
-func CreateProductOption(p *models.Product, v *models.OptionValue) models.ProductOption {
+func CreateProductOption(p *models.Product, v *[]models.OptionValue) models.ProductOption {
 	productOption := models.ProductOption{
 		Products: []models.Product{
 			*p,
 		},
-		OptionValues: []models.OptionValue{
-			*v,
-		},
+		OptionValues: *v,
 	}
 	if err := productOption.Create(); err != nil {
 		errWrapped := errors.Wrap(err, "Creating product option")
@@ -158,14 +156,12 @@ func CreatePaymentMethod() models.PaymentMethod {
 	return paymentMethod
 }
 
-func CreatePayment(pm *models.PaymentMethod) models.Payment {
+func CreatePayment(pm *[]models.PaymentMethod) models.Payment {
 	t := time.Now()
 	payment := models.Payment{
-		PaymentDate:   &t,
-		PaymentAmount: 300.11,
-		PaymentMethods: []models.PaymentMethod{
-			*pm,
-		},
+		PaymentDate:     &t,
+		PaymentAmount:   300.11,
+		PaymentMethods:  *pm,
 		PaymentError:    false,
 		PaymentFinished: false,
 	}
@@ -176,7 +172,7 @@ func CreatePayment(pm *models.PaymentMethod) models.Payment {
 	return payment
 }
 
-func CreateDelivery(dm *models.DeliveryMethod) models.Delivery {
+func CreateDelivery(dm *[]models.DeliveryMethod) models.Delivery {
 	delivery := models.Delivery{
 		ShippedVia:               "Michal",
 		TrackingCode:             "123793472742342",
@@ -184,9 +180,7 @@ func CreateDelivery(dm *models.DeliveryMethod) models.Delivery {
 		DestinationConturyRegion: "Podkarpackie",
 		DestinationAddress:       "Zamkowa 100/10",
 		DestinationCity:          "Oleszyce",
-		DeliveryMethods: []models.DeliveryMethod{
-			*dm,
-		},
+		DeliveryMethods:          *dm,
 	}
 	if err := delivery.Create(); err != nil {
 		errWrapped := errors.Wrap(err, "Creating delivery")
@@ -236,20 +230,14 @@ func CreateEmployedCustomer() models.Customer {
 	}
 	return customer
 }
-func CreateProductWithoutOrder(c *models.Category, i *models.Image, customer *models.Customer) models.Product {
+func CreateProductWithoutOrder(c *[]models.Category, i *[]models.Image, customer *[]models.Customer) models.Product {
 	product := models.Product{
 		UnitPrice:   0,
 		ProductName: "sample_image",
-		Category: []models.Category{
-			*c,
-		},
-		Image: []models.Image{
-			*i,
-		},
-		Customer: []models.Customer{
-			*customer,
-		},
-		Quantity: 3,
+		Category:    *c,
+		Image:       *i,
+		Customer:    *customer,
+		Quantity:    3,
 	}
 	if err := product.Create(); err != nil {
 		errWrapped := errors.Wrap(err, "Creating product without order")
@@ -272,21 +260,15 @@ func CreateOrder(p *models.Payment, d *models.Delivery) models.Order {
 	return order
 }
 
-func CreateProductWithOrder(c *models.Category, i *models.Image, customer *models.Customer, o *models.Order) models.Product {
+func CreateProductWithOrder(c *[]models.Category, i *[]models.Image, customer *[]models.Customer, o *models.Order) models.Product {
 	product := models.Product{
 		UnitPrice:   0,
 		ProductName: "sample_image",
-		Category: []models.Category{
-			*c,
-		},
-		Image: []models.Image{
-			*i,
-		},
-		Customer: []models.Customer{
-			*customer,
-		},
-		Quantity: 3,
-		Order:    *o,
+		Category:    *c,
+		Image:       *i,
+		Customer:    *customer,
+		Quantity:    3,
+		Order:       *o,
 	}
 	if err := product.Create(); err != nil {
 		errWrapped := errors.Wrap(err, "Creating product with order")
