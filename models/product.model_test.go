@@ -23,10 +23,17 @@ var _ = Describe("Product model", func() {
 			optionValue,
 		})
 		customer = CreateCustomer()
-		product = CreateProductWithoutOrder(&category, &image, &customer)
-		productOption = CreateProductOption(&product, &optionValue)
+		product = CreateProductWithoutOrder(&[]models.Category{
+			category,
+		}, &[]models.Image{
+			image,
+		}, &[]models.Customer{
+			customer,
+		})
+		productOption = CreateProductOption(&product, &[]models.OptionValue{
+			optionValue,
+		})
 	})
-
 	AfterEach(func() {
 		productOption.Delete()
 		product.Delete()
@@ -47,10 +54,6 @@ var _ = Describe("Product model", func() {
 				Expect(err).To(BeNil())
 				Expect(productObtained.ProductName).To(Equal(product.ProductName))
 			})
-		})
-
-		Context("Product with order", func() {
-
 		})
 
 	})
