@@ -1,12 +1,49 @@
 package models_test
 
 import (
+	"github.com/kamilwoloszyn/photo-cms/models"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
 
 var _ = Describe("Product Option test", func() {
-	Context("Basic crud testing", func() {
+	var optionsValues models.OptionValue
+	var options models.Option
+	var product models.Product
+	var image models.Image
+	var category models.Category
+	var customer models.Customer
+	var productOption models.ProductOption
 
+	BeforeEach(func() {
+		optionsValues = CreateOptionValue()
+		customer = CreateCustomer()
+		category = CreateCategory()
+		image = CreateImage()
+		product = CreateProductWithoutOrder(&[]models.Category{
+			category,
+		}, &[]models.Image{
+			image,
+		}, &[]models.Customer{
+			customer,
+		})
+		productOption = CreateProductOption(&product, &[]models.OptionValue{optionsValues})
+	})
+
+	AfterEach(func() {
+		productOption.Delete()
+		product.Delete()
+		image.Delete()
+		category.Delete()
+		optionsValues.Delete()
+		options.Delete()
+	})
+	Context("Basic crud testing", func() {
+		It("Should be in db", func() {
+			var obtainedProductOption models.ProductOption
+			err := obtainedProductOption.SetID(productOption.GetID())
+			Expect(err).To(BeNil())
+			err = obtainedProductOption.FetchById()
+		})
 	})
 })
