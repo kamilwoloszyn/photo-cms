@@ -8,7 +8,7 @@ type OptionValue struct {
 
 func (o *OptionValue) FetchById() error {
 	if handler == nil {
-		return HandlerNotFound
+		return ErrHandlerNotFound
 	}
 	return handler.First(o).Error
 
@@ -16,14 +16,17 @@ func (o *OptionValue) FetchById() error {
 
 func (o *OptionValue) Create() error {
 	if handler == nil {
-		return HandlerNotFound
+		return ErrHandlerNotFound
 	}
 	return handler.Create(o).Error
 }
 
 func (o *OptionValue) Delete() error {
 	if handler == nil {
-		return HandlerNotFound
+		return ErrHandlerNotFound
+	}
+	if len(o.ID) == 0 {
+		return ErrIdEmpty
 	}
 	return handler.Delete(o).Error
 }
