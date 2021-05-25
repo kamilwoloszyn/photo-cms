@@ -17,7 +17,7 @@ type Customer struct {
 
 func (c *Customer) Create() error {
 	if handler == nil {
-		return HandlerNotFound
+		return ErrHandlerNotFound
 	}
 
 	return handler.Create(c).Error
@@ -34,7 +34,10 @@ func (c *Customer) SetId(id string) {
 
 func (c *Customer) FetchById() error {
 	if handler == nil {
-		return HandlerNotFound
+		return ErrHandlerNotFound
+	}
+	if len(c.ID) == 0 {
+		return ErrIdEmpty
 	}
 	return handler.Find(c).Error
 
