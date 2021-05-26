@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 type Base struct {
@@ -16,13 +16,15 @@ type Base struct {
 	DeletedAt string `sql:"index" json:"deleted_at"`
 }
 
-func (b *Base) BeforeCreate(scope *gorm.Scope) error {
+func (b *Base) BeforeCreate(tx *gorm.DB) error {
 	id, err := uuid.NewRandom()
 	if err != nil {
 		errWrapped := fmt.Sprintf("Cannot generate new Id : %s", err.Error())
 		return errors.New(errWrapped)
 	}
-	return scope.SetColumn("id", id)
+	tx.Statement.SetColumn("id", id)
+	return nil
+
 }
 
 func (b *Base) GetID() string {
