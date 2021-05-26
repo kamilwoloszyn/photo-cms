@@ -1,8 +1,8 @@
 package migrations
 
 import (
-	"github.com/jinzhu/gorm"
 	"github.com/kamilwoloszyn/photo-cms/models"
+	"gorm.io/gorm"
 )
 
 func Migrate(db *gorm.DB) {
