@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/jinzhu/gorm"
 	"github.com/kamilwoloszyn/photo-cms/configs"
 	"github.com/kamilwoloszyn/photo-cms/pkg/database"
+	"gorm.io/gorm"
 )
 
 var (
@@ -28,7 +28,12 @@ func GetHandler() *gorm.DB {
 }
 
 func CloseDB(db *gorm.DB) error {
-	return db.Close()
+	instance, err := db.DB()
+	if err != nil {
+		return err
+	}
+	instance.Close()
+	return nil
 }
 
 func Connect() error {
