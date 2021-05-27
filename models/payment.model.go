@@ -1,14 +1,19 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 type Payment struct {
 	Base
 	PaymentDate     *time.Time
 	PaymentAmount   float32
-	PaymentMethods  []PaymentMethod
 	PaymentError    bool
 	PaymentFinished bool
+	PaymentMethodId uuid.UUID
+	Order           []Order `gorm:"foreignKey:PaymentId"`
 }
 
 func (p *Payment) Create() error {
