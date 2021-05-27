@@ -2,8 +2,8 @@ package models
 
 type Option struct {
 	Base
-	Name          string
-	OptionsValues []OptionValue
+	Name        string
+	OptionValue []OptionValue `gorm:"foreignKey:OptionId"`
 }
 
 func (o *Option) FetchById() error {

@@ -4,6 +4,7 @@ type DeliveryMethod struct {
 	Base
 	Name       string
 	FixedPirce float32
+	Delivery   []Delivery `gorm:"foreignKey:DeliveryMethodId"`
 }
 
 func (d *DeliveryMethod) Create() error {

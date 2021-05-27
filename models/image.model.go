@@ -5,6 +5,7 @@ type Image struct {
 	Name     string
 	FullPath string
 	Size     uint32
+	Product  Product `gorm:"foreignKey:ImageId"`
 }
 
 func (i *Image) Create() error {
