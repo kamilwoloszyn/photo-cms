@@ -1,11 +1,14 @@
 package models
 
+import "github.com/google/uuid"
+
 type Order struct {
 	Base
-	Fvat     bool
-	Price    float32
-	Payment  Payment
-	Delivery Delivery
+	Fvat       bool
+	Price      float32
+	PaymentId  uuid.UUID
+	DeliveryId uuid.UUID
+	Product    []Product `gorm:"foreignKey:OrderId"`
 }
 
 func (o *Order) Delete() error {
