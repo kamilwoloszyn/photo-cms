@@ -10,10 +10,10 @@ import (
 )
 
 type Base struct {
-	ID        string `sql:"type:uuid;primary_key;default:uuid_generate_v4()" validate:"omitempty,uuid,required"`
-	CreatedAt string `json:"created_at"`
-	UpdatedAt string `json:"updated_at"`
-	DeletedAt string `sql:"index" json:"deleted_at"`
+	ID        uuid.UUID `sql:"type:uuid;primary_key;default:uuid_generate_v4()" validate:"omitempty,uuid,required"`
+	CreatedAt string    `json:"created_at"`
+	UpdatedAt string    `json:"updated_at"`
+	DeletedAt string    `sql:"index" json:"deleted_at"`
 }
 
 func (b *Base) BeforeCreate(tx *gorm.DB) error {
@@ -27,11 +27,11 @@ func (b *Base) BeforeCreate(tx *gorm.DB) error {
 
 }
 
-func (b *Base) GetID() string {
+func (b *Base) GetID() uuid.UUID {
 	return b.ID
 }
 
-func (b *Base) SetID(newId string) error {
+func (b *Base) SetID(newId uuid.UUID) error {
 	if len(newId) == 0 {
 		return errors.New("new id is empty")
 	}
