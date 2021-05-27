@@ -8,6 +8,7 @@ type PaymentMethod struct {
 	KeyMd5      string
 	ClientId    string
 	OauthSecret string
+	Payment     []Payment `gorm:"foreignKey:PaymentMethodId"`
 }
 
 func (p *PaymentMethod) FetchByID() error {
