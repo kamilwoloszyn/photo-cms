@@ -1,9 +1,12 @@
 package models
 
+import "github.com/google/uuid"
+
 type OptionValue struct {
 	Base
 	Value      string
 	ExtraPrice float32
+	OptionId   uuid.UUID
 }
 
 func (o *OptionValue) FetchById() error {
