@@ -5,18 +5,23 @@ import (
 	"gorm.io/gorm"
 )
 
-func Migrate(db *gorm.DB) {
-	db.AutoMigrate(&models.Option{})
-	db.AutoMigrate(&models.OptionValue{})
-	db.AutoMigrate(&models.ProductOption{})
-	db.AutoMigrate(&models.Customer{})
-	db.AutoMigrate(&models.Image{})
-	db.AutoMigrate(&models.DeliveryMethod{})
-	db.AutoMigrate(&models.Category{})
-	db.AutoMigrate(&models.PaymentMethod{})
-	db.AutoMigrate(&models.Payment{})
-	db.AutoMigrate(&models.Delivery{})
-	db.AutoMigrate(&models.Product{})
-	db.AutoMigrate(&models.Order{})
+func Migrate(db *gorm.DB) error {
+	if err := db.AutoMigrate(
+		&models.PaymentMethod{},
+		&models.Payment{},
+		&models.DeliveryMethod{},
+		&models.Delivery{},
+		&models.Category{},
+		&models.Customer{},
+		&models.Image{},
+		&models.Product{},
+		&models.Order{},
+		&models.ProductOption{},
+		&models.Option{},
+		&models.OptionValue{},
+	); err != nil {
+		return err
+	}
+	return nil
 
 }
