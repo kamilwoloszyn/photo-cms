@@ -3,6 +3,7 @@ package models
 type Category struct {
 	Base
 	CategoryName string
+	Product      []Product `gorm:"foreignKey:CategoryId"`
 }
 
 func (c *Category) FetchById() error {
