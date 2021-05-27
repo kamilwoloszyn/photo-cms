@@ -1,14 +1,17 @@
 package models
 
+import "github.com/google/uuid"
+
 type Product struct {
 	Base
-	UnitPrice   float32
-	ProductName string
-	Quantity    uint32
-	Category    []Category
-	Image       []Image
-	Customer    []Customer
-	Order       Order
+	UnitPrice     float32
+	ProductName   string
+	Quantity      uint32
+	ProductOption []ProductOption `gorm:"foreignKey:ProductId"`
+	CategoryId    uuid.UUID
+	ImageId       uuid.UUID
+	CustomerId    uuid.UUID
+	OrderId       uuid.UUID
 }
 
 func (p *Product) Create() error {
@@ -42,6 +45,6 @@ func (p *Product) AssignTo(o *Order) error {
 	if len(o.ID) == 0 {
 		return ErrIdEmpty
 	}
-	p.Order = *o
+	p.OrderId = o.GetID()
 	return nil
 }
