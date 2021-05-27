@@ -1,9 +1,11 @@
 package models
 
+import "github.com/google/uuid"
+
 type ProductOption struct {
 	Base
-	OptionValues []OptionValue
-	Products     []Product
+	OptionValueId uuid.UUID
+	ProductId     uuid.UUID
 }
 
 func (p *ProductOption) Create() error {
