@@ -23,7 +23,8 @@ var _ = Describe("Db Automigrate", func() {
 	})
 	Describe("Migration into db", func() {
 		It("Should migrate into db", func() {
-			migrations.Migrate(db)
+			err := migrations.Migrate(db)
+			Expect(err).To(BeNil())
 		})
 	})
 
