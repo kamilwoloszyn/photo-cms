@@ -1,5 +1,7 @@
 package models
 
+import "github.com/google/uuid"
+
 type Customer struct {
 	Base
 	City         string
@@ -13,6 +15,7 @@ type Customer struct {
 	Employed     bool
 	NIP          string
 	Regon        string
+	Products     []Product
 }
 
 func (c *Customer) Create() error {
@@ -26,7 +29,7 @@ func (c *Customer) Delete() error {
 	return handler.Delete(c).Error
 }
 
-func (c *Customer) SetId(id string) {
+func (c *Customer) SetId(id uuid.UUID) {
 	if len(id) > 0 {
 		c.ID = id
 	}
