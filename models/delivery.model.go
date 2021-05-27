@@ -1,5 +1,7 @@
 package models
 
+import "github.com/google/uuid"
+
 type Delivery struct {
 	Base
 	ShippedVia               string
@@ -8,7 +10,9 @@ type Delivery struct {
 	DestinationConturyRegion string
 	DestinationAddress       string
 	DestinationCity          string
-	DeliveryMethods          []DeliveryMethod
+	PaymentMethodId          uuid.UUID
+	DeliveryMethodId         uuid.UUID
+	Order                    []Order `gorm:"foreignKey:DeliveryId"`
 }
 
 func (d *Delivery) FetchById() error {
