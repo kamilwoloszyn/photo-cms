@@ -20,14 +20,8 @@ var _ = Describe("Product Option test", func() {
 		customer = CreateCustomer()
 		category = CreateCategory()
 		image = CreateImage()
-		product = CreateProductWithoutOrder(&[]models.Category{
-			category,
-		}, &[]models.Image{
-			image,
-		}, &[]models.Customer{
-			customer,
-		})
-		productOption = CreateProductOption(&product, &[]models.OptionValue{optionsValues})
+		product = CreateProductWithoutOrder(&category, &image, &customer)
+		productOption = CreateProductOption(&product, &optionsValues)
 	})
 
 	AfterEach(func() {
@@ -44,6 +38,8 @@ var _ = Describe("Product Option test", func() {
 			err := obtainedProductOption.SetID(productOption.GetID())
 			Expect(err).To(BeNil())
 			err = obtainedProductOption.FetchById()
+			Expect(err).To(BeNil())
+			Expect(obtainedProductOption.ProductId).To(Equal(product.ID))
 		})
 	})
 })
