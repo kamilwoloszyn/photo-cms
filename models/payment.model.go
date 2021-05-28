@@ -39,3 +39,10 @@ func (p *Payment) FetchByID() error {
 	}
 	return handler.First(p).Error
 }
+
+func (p *Payment) UpdateAll() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	return handler.Save(p).Error
+}
