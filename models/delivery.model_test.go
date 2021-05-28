@@ -11,7 +11,7 @@ var _ = Describe("Devliery model", func() {
 	var delivery models.Delivery
 	BeforeEach(func() {
 		deliveryMethod = CreateDeliveryMethod()
-		delivery = CreateDelivery(&[]models.DeliveryMethod{deliveryMethod})
+		delivery = CreateDelivery(&deliveryMethod)
 	})
 
 	AfterEach(func() {

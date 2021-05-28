@@ -14,11 +14,8 @@ var _ = Describe("Payment model", func() {
 
 	BeforeEach(func() {
 		paymentMethod = CreatePaymentMethod()
-		payment = CreatePayment(&[]models.PaymentMethod{
-			paymentMethod,
-		})
+		payment = CreatePayment(&paymentMethod)
 	})
-
 	AfterEach(func() {
 		payment.Delete()
 		paymentMethod.Delete()
