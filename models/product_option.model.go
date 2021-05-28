@@ -28,5 +28,11 @@ func (p *ProductOption) FetchById() error {
 		return ErrIdEmpty
 	}
 	return handler.First(p).Error
+}
 
+func (p *ProductOption) UpdateAll() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	return handler.Save(p).Error
 }
