@@ -23,16 +23,8 @@ var _ = Describe("Product model", func() {
 			optionValue,
 		})
 		customer = CreateCustomer()
-		product = CreateProductWithoutOrder(&[]models.Category{
-			category,
-		}, &[]models.Image{
-			image,
-		}, &[]models.Customer{
-			customer,
-		})
-		productOption = CreateProductOption(&product, &[]models.OptionValue{
-			optionValue,
-		})
+		product = CreateProductWithoutOrder(&category, &image, &customer)
+		productOption = CreateProductOption(&product, &optionValue)
 	})
 	AfterEach(func() {
 		productOption.Delete()
