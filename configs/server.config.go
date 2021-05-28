@@ -43,6 +43,8 @@ func (s *Server) ApplyRoutes() {
 	{
 		s.Routes.GET("/ping")
 		s.Routes.POST("/login")
-		s.Routes.POST("/registartion")
+		s.Routes.POST("/registration")
+		s.Routes.GET("/dashboard")
+		s.Routes.POST("/dashboard/upload")
 	}
 }
