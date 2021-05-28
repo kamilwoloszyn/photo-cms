@@ -34,3 +34,10 @@ func (p *PaymentMethod) Create() error {
 	}
 	return handler.Create(p).Error
 }
+
+func (p *PaymentMethod) UpdateAll() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	return handler.Save(p).Error
+}

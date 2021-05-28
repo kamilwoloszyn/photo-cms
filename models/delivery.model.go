@@ -38,3 +38,10 @@ func (d *Delivery) Create() error {
 	}
 	return handler.Create(d).Error
 }
+
+func (d *Delivery) UpdateAll() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	return handler.Save(d).Error
+}

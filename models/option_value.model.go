@@ -33,3 +33,10 @@ func (o *OptionValue) Delete() error {
 	}
 	return handler.Delete(o).Error
 }
+
+func (o *OptionValue) UpdateAll() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	return handler.Save(o).Error
+}

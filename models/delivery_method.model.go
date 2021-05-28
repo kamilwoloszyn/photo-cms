@@ -31,3 +31,10 @@ func (d *DeliveryMethod) FetchById() error {
 	}
 	return handler.First(d).Error
 }
+
+func (d *DeliveryMethod) UpdateAll() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	return handler.Save(d).Error
+}

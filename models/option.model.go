@@ -29,3 +29,10 @@ func (o *Option) Create() error {
 	}
 	return handler.Create(o).Error
 }
+
+func (o *Option) UpdateAll() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	return handler.Save(o).Error
+}

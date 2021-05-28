@@ -34,3 +34,10 @@ func (o *Order) FetchById() error {
 	}
 	return handler.Find(o).Error
 }
+
+func (o *Order) UpdateAll() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	return handler.Save(o).Error
+}

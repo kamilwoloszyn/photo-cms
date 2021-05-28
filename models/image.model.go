@@ -31,3 +31,10 @@ func (i *Image) Delete() error {
 	}
 	return handler.Delete(i).Error
 }
+
+func (i *Image) UpdateAll() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	return handler.Save(i).Error
+}

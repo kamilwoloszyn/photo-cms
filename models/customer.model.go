@@ -45,3 +45,10 @@ func (c *Customer) FetchById() error {
 	return handler.Find(c).Error
 
 }
+
+func (c *Customer) UpdateAll() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	return handler.Save(c).Error
+}

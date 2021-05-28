@@ -29,3 +29,10 @@ func (c *Category) Delete() error {
 	}
 	return handler.Delete(c).Error
 }
+
+func (c *Category) UpdateAll() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	return handler.Save(c).Error
+}
