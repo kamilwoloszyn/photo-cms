@@ -81,8 +81,8 @@ func CreateOptionValue() models.OptionValue {
 
 func CreateOption(opt *[]models.OptionValue) models.Option {
 	sampleOption := models.Option{
-		Name:          "Color",
-		OptionsValues: *opt,
+		Name:        "Color",
+		OptionValue: *opt,
 	}
 	if err := sampleOption.Create(); err != nil {
 		wrappedErr := errors.Wrap(err, "Creating Option")
@@ -101,12 +101,10 @@ func CreateCategory() models.Category {
 	}
 	return sampleCategory
 }
-func CreateProductOption(p *models.Product, v *[]models.OptionValue) models.ProductOption {
+func CreateProductOption(p *models.Product, v *models.OptionValue) models.ProductOption {
 	productOption := models.ProductOption{
-		Products: []models.Product{
-			*p,
-		},
-		OptionValues: *v,
+		ProductId:     p.GetID(),
+		OptionValueId: v.GetID(),
 	}
 	if err := productOption.Create(); err != nil {
 		errWrapped := errors.Wrap(err, "Creating product option")
@@ -156,12 +154,12 @@ func CreatePaymentMethod() models.PaymentMethod {
 	return paymentMethod
 }
 
-func CreatePayment(pm *[]models.PaymentMethod) models.Payment {
+func CreatePayment(pm *models.PaymentMethod) models.Payment {
 	t := time.Now()
 	payment := models.Payment{
 		PaymentDate:     &t,
 		PaymentAmount:   300.11,
-		PaymentMethods:  *pm,
+		PaymentMethodId: pm.GetID(),
 		PaymentError:    false,
 		PaymentFinished: false,
 	}
@@ -172,7 +170,7 @@ func CreatePayment(pm *[]models.PaymentMethod) models.Payment {
 	return payment
 }
 
-func CreateDelivery(dm *[]models.DeliveryMethod) models.Delivery {
+func CreateDelivery(dm *models.DeliveryMethod) models.Delivery {
 	delivery := models.Delivery{
 		ShippedVia:               "Michal",
 		TrackingCode:             "123793472742342",
@@ -180,7 +178,7 @@ func CreateDelivery(dm *[]models.DeliveryMethod) models.Delivery {
 		DestinationConturyRegion: "Podkarpackie",
 		DestinationAddress:       "Zamkowa 100/10",
 		DestinationCity:          "Oleszyce",
-		DeliveryMethods:          *dm,
+		DeliveryMethodId:         dm.GetID(),
 	}
 	if err := delivery.Create(); err != nil {
 		errWrapped := errors.Wrap(err, "Creating delivery")
@@ -230,13 +228,13 @@ func CreateEmployedCustomer() models.Customer {
 	}
 	return customer
 }
-func CreateProductWithoutOrder(c *[]models.Category, i *[]models.Image, customer *[]models.Customer) models.Product {
+func CreateProductWithoutOrder(c *models.Category, i *models.Image, customer *models.Customer) models.Product {
 	product := models.Product{
 		UnitPrice:   0,
 		ProductName: "sample_image",
-		Category:    *c,
-		Image:       *i,
-		Customer:    *customer,
+		CategoryId:  c.GetID(),
+		ImageId:     i.GetID(),
+		CustomerId:  c.GetID(),
 		Quantity:    3,
 	}
 	if err := product.Create(); err != nil {
@@ -246,12 +244,13 @@ func CreateProductWithoutOrder(c *[]models.Category, i *[]models.Image, customer
 	return product
 }
 
-func CreateOrder(p *models.Payment, d *models.Delivery) models.Order {
+func CreateOrder(p *models.Payment, d *models.Delivery, product *[]models.Product) models.Order {
 	order := models.Order{
-		Fvat:     true,
-		Price:    320,
-		Payment:  *p,
-		Delivery: *d,
+		Fvat:       true,
+		Price:      320,
+		PaymentId:  p.GetID(),
+		DeliveryId: d.GetID(),
+		Product:    *product,
 	}
 	if err := order.Create(); err != nil {
 		errWarpped := errors.Wrap(err, "Creating order")
@@ -260,15 +259,15 @@ func CreateOrder(p *models.Payment, d *models.Delivery) models.Order {
 	return order
 }
 
-func CreateProductWithOrder(c *[]models.Category, i *[]models.Image, customer *[]models.Customer, o *models.Order) models.Product {
+func CreateProductWithOrder(c *models.Category, i *models.Image, customer *models.Customer, o *models.Order) models.Product {
 	product := models.Product{
 		UnitPrice:   0,
 		ProductName: "sample_image",
-		Category:    *c,
-		Image:       *i,
-		Customer:    *customer,
+		CategoryId:  c.GetID(),
+		ImageId:     i.GetID(),
+		CustomerId:  customer.GetID(),
+		OrderId:     o.ID,
 		Quantity:    3,
-		Order:       *o,
 	}
 	if err := product.Create(); err != nil {
 		errWrapped := errors.Wrap(err, "Creating product with order")
