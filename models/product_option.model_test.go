@@ -8,15 +8,15 @@ import (
 
 var _ = Describe("Product Option test", func() {
 	var optionsValues models.OptionValue
-	var options models.Option
+	var option models.Option
 	var product models.Product
 	var image models.Image
 	var category models.Category
 	var customer models.Customer
 	var productOption models.ProductOption
-
 	BeforeEach(func() {
-		optionsValues = CreateOptionValue()
+		option = CreateOption()
+		optionsValues = CreateOptionValue(&option)
 		customer = CreateCustomer()
 		category = CreateCategory()
 		image = CreateImage()
@@ -30,7 +30,7 @@ var _ = Describe("Product Option test", func() {
 		image.Delete()
 		category.Delete()
 		optionsValues.Delete()
-		options.Delete()
+		option.Delete()
 	})
 	Context("Basic crud testing", func() {
 		It("Should be in db", func() {
