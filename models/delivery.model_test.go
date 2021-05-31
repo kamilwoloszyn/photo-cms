@@ -22,7 +22,7 @@ var _ = Describe("Devliery model", func() {
 	Describe("Basic crud operations", func() {
 		It("Should be in db", func() {
 			obtainedDelivery := models.Delivery{}
-			err := obtainedDelivery.SetID(deliveryMethod.GetID())
+			err := obtainedDelivery.SetID(delivery.GetID())
 			Expect(err).To(BeNil())
 			err = obtainedDelivery.FetchById()
 			Expect(err).To(BeNil())
