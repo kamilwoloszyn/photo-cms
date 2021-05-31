@@ -12,7 +12,7 @@ var _ = Describe("Db Automigrate", func() {
 	var db *gorm.DB
 
 	BeforeEach(func() {
-		err := models.Connect()
+		err := models.ConnectDB()
 		Expect(err).To(BeNil())
 		db = models.GetHandler()
 	})
