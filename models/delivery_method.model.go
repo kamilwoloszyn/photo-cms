@@ -2,8 +2,8 @@ package models
 
 type DeliveryMethod struct {
 	Base
-	Name       string
-	FixedPirce float32
+	Name       string     `gorm:"not null"`
+	FixedPirce float32    `gorm:"not null"`
 	Delivery   []Delivery `gorm:"foreignKey:DeliveryMethodId"`
 }
 

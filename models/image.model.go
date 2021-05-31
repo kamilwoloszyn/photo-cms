@@ -2,8 +2,8 @@ package models
 
 type Image struct {
 	Base
-	Name     string
-	FullPath string
+	Name     string `gorm:"not null"`
+	FullPath string `gorm:"not null"`
 	Size     uint32
 	Product  Product `gorm:"foreignKey:ImageId"`
 }

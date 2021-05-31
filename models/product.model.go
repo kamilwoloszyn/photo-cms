@@ -8,10 +8,10 @@ type Product struct {
 	ProductName   string
 	Quantity      uint32
 	ProductOption []ProductOption `gorm:"foreignKey:ProductId"`
-	CategoryId    uuid.UUID
-	ImageId       uuid.UUID
-	CustomerId    uuid.UUID
-	OrderId       uuid.UUID
+	CategoryId    uuid.UUID       `gorm:"not null"`
+	ImageId       uuid.UUID       `gorm:"not null"`
+	CustomerId    uuid.UUID       `gorm:"not null"`
+	OrderId       uuid.UUID       `gorm:"default: null"`
 }
 
 func (p *Product) Create() error {

@@ -4,17 +4,17 @@ import "github.com/google/uuid"
 
 type Customer struct {
 	Base
-	City         string
-	Address      string
-	FirstName    string
-	LastName     string
-	PostalCode   string
-	CompanyName  string
-	PhoneNumber  string
-	EmailAddress string
-	Employed     bool
-	NIP          string
-	Regon        string
+	City         string `gorm:"not null"`
+	Address      string `gorm:"not null"`
+	FirstName    string `gorm:"not null"`
+	LastName     string `gorm:"not null"`
+	PostalCode   string `gorm:"not null"`
+	CompanyName  string `gorm:"not null"`
+	PhoneNumber  string `gorm:"not null"`
+	EmailAddress string `gorm:"unique; not null"`
+	Employed     bool   `gorm:"default:false;"`
+	NIP          string `gorm:"unique; not null"`
+	Regon        string `gorm:"unique"`
 	Products     []Product
 }
 

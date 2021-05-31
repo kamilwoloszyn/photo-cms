@@ -4,8 +4,8 @@ import "github.com/google/uuid"
 
 type Order struct {
 	Base
-	Fvat       bool
-	Price      float32
+	Fvat       bool    `gorm:"default:false"`
+	Price      float32 `gorm:"not null"`
 	PaymentId  uuid.UUID
 	DeliveryId uuid.UUID
 	Product    []Product `gorm:"foreignKey:OrderId"`

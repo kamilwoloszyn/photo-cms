@@ -9,9 +9,9 @@ import (
 type Payment struct {
 	Base
 	PaymentDate     *time.Time
-	PaymentAmount   float32
-	PaymentError    bool
-	PaymentFinished bool
+	PaymentAmount   float32 `gorm:"not null"`
+	PaymentError    bool    `gorm:"default:false"`
+	PaymentFinished bool    `gorm:"default:false"`
 	PaymentMethodId uuid.UUID
 	Order           []Order `gorm:"foreignKey:PaymentId"`
 }

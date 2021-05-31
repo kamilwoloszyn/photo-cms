@@ -2,7 +2,7 @@ package models
 
 type Category struct {
 	Base
-	CategoryName string
+	CategoryName string    `gorm:"not null"`
 	Product      []Product `gorm:"foreignKey:CategoryId"`
 }
 

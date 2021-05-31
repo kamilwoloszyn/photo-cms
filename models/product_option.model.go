@@ -4,8 +4,8 @@ import "github.com/google/uuid"
 
 type ProductOption struct {
 	Base
-	OptionValueId uuid.UUID
-	ProductId     uuid.UUID
+	OptionValueId uuid.UUID `gorm:"not null"`
+	ProductId     uuid.UUID `gorm:"not null"`
 }
 
 func (p *ProductOption) Create() error {

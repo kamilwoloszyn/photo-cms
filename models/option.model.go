@@ -2,7 +2,7 @@ package models
 
 type Option struct {
 	Base
-	Name        string
+	Name        string        `gorm:"not null"`
 	OptionValue []OptionValue `gorm:"foreignKey:OptionId"`
 }
 
