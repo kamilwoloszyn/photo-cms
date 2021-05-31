@@ -66,10 +66,11 @@ func CreateOptionValues() []models.OptionValue {
 	return []models.OptionValue{sampleValue1, sampleValue2, sampleValue3}
 }
 
-func CreateOptionValue() models.OptionValue {
+func CreateOptionValue(o *models.Option) models.OptionValue {
 	sampleValue1 := models.OptionValue{
 		Value:      "Yellow",
 		ExtraPrice: 10.0,
+		OptionId:   o.GetID(),
 	}
 	if err := sampleValue1.Create(); err != nil {
 		errWrapped := errors.Wrap(err, "Creating Option value1")
@@ -79,10 +80,9 @@ func CreateOptionValue() models.OptionValue {
 	return sampleValue1
 }
 
-func CreateOption(opt *[]models.OptionValue) models.Option {
+func CreateOption() models.Option {
 	sampleOption := models.Option{
-		Name:        "Color",
-		OptionValue: *opt,
+		Name: "Color",
 	}
 	if err := sampleOption.Create(); err != nil {
 		wrappedErr := errors.Wrap(err, "Creating Option")
@@ -228,13 +228,13 @@ func CreateEmployedCustomer() models.Customer {
 	}
 	return customer
 }
-func CreateProductWithoutOrder(c *models.Category, i *models.Image, customer *models.Customer) models.Product {
+func CreateProductWithoutOrder(category *models.Category, image *models.Image, customer *models.Customer) models.Product {
 	product := models.Product{
 		UnitPrice:   0,
 		ProductName: "sample_image",
-		CategoryId:  c.GetID(),
-		ImageId:     i.GetID(),
-		CustomerId:  c.GetID(),
+		CategoryId:  category.GetID(),
+		ImageId:     image.GetID(),
+		CustomerId:  customer.GetID(),
 		Quantity:    3,
 	}
 	if err := product.Create(); err != nil {
@@ -244,13 +244,12 @@ func CreateProductWithoutOrder(c *models.Category, i *models.Image, customer *mo
 	return product
 }
 
-func CreateOrder(p *models.Payment, d *models.Delivery, product *[]models.Product) models.Order {
+func CreateOrder(p *models.Payment, d *models.Delivery) models.Order {
 	order := models.Order{
 		Fvat:       true,
 		Price:      320,
 		PaymentId:  p.GetID(),
 		DeliveryId: d.GetID(),
-		Product:    *product,
 	}
 	if err := order.Create(); err != nil {
 		errWarpped := errors.Wrap(err, "Creating order")
