@@ -27,8 +27,8 @@ func GetHandler() *gorm.DB {
 	return handler
 }
 
-func CloseDB(db *gorm.DB) error {
-	instance, err := db.DB()
+func CloseDB() error {
+	instance, err := handler.DB()
 	if err != nil {
 		return err
 	}
@@ -36,7 +36,7 @@ func CloseDB(db *gorm.DB) error {
 	return nil
 }
 
-func Connect() error {
+func ConnectDB() error {
 	if handler != nil {
 		return nil
 	}
