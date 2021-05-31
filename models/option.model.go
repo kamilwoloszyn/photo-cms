@@ -1,5 +1,7 @@
 package models
 
+import "github.com/pkg/errors"
+
 type Option struct {
 	Base
 	Name        string        `gorm:"not null"`
@@ -35,4 +37,17 @@ func (o *Option) UpdateAll() error {
 		return ErrHandlerNotFound
 	}
 	return handler.Save(o).Error
+}
+
+func (o *Option) GetOptionValues() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	err := handler.Model(o).Select("options.id, options.name,option_values.value").Joins("left join option_values on option_values.option_id = options.id").Where("options.id= ?", o.GetID()).Find(&o.OptionValue).Error
+	if err != nil {
+		errWrapped := errors.Wrap(err, "GetOptionValues : Join tables")
+		return errWrapped
+	}
+
+	return nil
 }
