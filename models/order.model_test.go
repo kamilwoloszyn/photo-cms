@@ -26,10 +26,8 @@ var _ = Describe("Order Model", func() {
 	BeforeEach(func() {
 		category = CreateCategory()
 		image = CreateImage()
-		optionValue = CreateOptionValue()
-		option = CreateOption(&[]models.OptionValue{
-			optionValue,
-		})
+		option = CreateOption()
+		optionValue = CreateOptionValue(&option)
 		customer = CreateCustomer()
 		product = CreateProductWithoutOrder(&category, &image, &customer)
 		productOption = CreateProductOption(&product, &optionValue)
@@ -37,7 +35,7 @@ var _ = Describe("Order Model", func() {
 		delivery = CreateDelivery(&deliveryMethod)
 		paymentMethod = CreatePaymentMethod()
 		payment = CreatePayment(&paymentMethod)
-		order = CreateOrder(&payment, &delivery, &[]models.Product{product})
+		order = CreateOrder(&payment, &delivery)
 	})
 
 	AfterEach(func() {
@@ -56,15 +54,18 @@ var _ = Describe("Order Model", func() {
 	})
 
 	Describe("Basic crud testing", func() {
-		var obtainedOrder models.Order
-		err := obtainedOrder.SetID(order.GetID())
-		Expect(err).To(BeNil())
-		err = obtainedOrder.FetchById()
-		Expect(err).To(BeNil())
-		Expect(obtainedOrder.Price).To(Equal(order.Price))
+		It("Should be in db", func() {
+			var obtainedOrder models.Order
+			err := obtainedOrder.SetID(order.GetID())
+			Expect(err).To(BeNil())
+			err = obtainedOrder.FetchById()
+			Expect(err).To(BeNil())
+			Expect(obtainedOrder.Price).To(Equal(order.Price))
+		})
+
 	})
 
-	Describe("Relationship testing", func() {
+	// Describe("Relationship testing", func() {
 
-	})
+	// })
 })
