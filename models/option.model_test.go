@@ -12,22 +12,23 @@ var _ = Describe("Option model test", func() {
 	var option models.Option
 
 	BeforeEach(func() {
-		optionVal = CreateOptionValue()
-		option = CreateOption(&[]models.OptionValue{
-			optionVal,
-		})
+		option = CreateOption()
+		optionVal = CreateOptionValue(&option)
 	})
 	AfterEach(func() {
-		option.Delete()
 		optionVal.Delete()
+		option.Delete()
 	})
 
 	Describe("Basic crud testing", func() {
 		var obtainedOption models.Option
-		err := obtainedOption.SetID(option.GetID())
-		Expect(err).To(BeNil())
-		err = obtainedOption.FetchById()
-		Expect(err).To(BeNil())
-		Expect(obtainedOption.Name).To(Equal(option.Name))
+		It("Should be stored into db", func() {
+			err := obtainedOption.SetID(option.GetID())
+			Expect(err).To(BeNil())
+			err = obtainedOption.FetchById()
+			Expect(err).To(BeNil())
+			Expect(obtainedOption.Name).To(Equal(option.Name))
+		})
+
 	})
 })
