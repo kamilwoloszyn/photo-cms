@@ -80,6 +80,45 @@ func CreateOptionValue(o *models.Option) models.OptionValue {
 	return sampleValue1
 }
 
+func CreateSomeOptionValues(o *models.Option) []models.OptionValue {
+	sampleValue1 := models.OptionValue{
+		Value:      "Red",
+		ExtraPrice: 10.0,
+		OptionId:   o.GetID(),
+	}
+	sampleValue2 := models.OptionValue{
+		Value:      "Green",
+		ExtraPrice: 10.0,
+		OptionId:   o.GetID(),
+	}
+	sampleValue3 := models.OptionValue{
+		Value:      "Blue",
+		ExtraPrice: 10.0,
+		OptionId:   o.GetID(),
+	}
+
+	if err := sampleValue1.Create(); err != nil {
+		errWrapped := errors.Wrap(err, "Creating option value1")
+		Fail(errWrapped.Error())
+	}
+
+	if err := sampleValue2.Create(); err != nil {
+		errWrapped := errors.Wrap(err, "Creating option value2")
+		Fail(errWrapped.Error())
+	}
+
+	if err := sampleValue3.Create(); err != nil {
+		errWrapped := errors.Wrap(err, "Creating option value3")
+		Fail(errWrapped.Error())
+	}
+
+	return []models.OptionValue{
+		sampleValue1,
+		sampleValue2,
+		sampleValue3,
+	}
+}
+
 func CreateOption() models.Option {
 	sampleOption := models.Option{
 		Name: "Color",
@@ -138,6 +177,37 @@ func CreateDeliveryMethod() models.DeliveryMethod {
 	return deliveryMethod
 }
 
+func CreateSomeDeliveryMethods() []models.DeliveryMethod {
+	deliveryMethod1 := models.DeliveryMethod{
+		Name:       "InPost",
+		FixedPirce: 8.99,
+	}
+	deliveryMethod2 := models.DeliveryMethod{
+		Name:       "InPost",
+		FixedPirce: 8.99,
+	}
+
+	deliveryMethod3 := models.DeliveryMethod{
+		Name:       "InPost",
+		FixedPirce: 8.99,
+	}
+
+	if err := deliveryMethod1.Create(); err != nil {
+		Fail(err.Error())
+	}
+	if err := deliveryMethod2.Create(); err != nil {
+		Fail(err.Error())
+	}
+	if err := deliveryMethod3.Create(); err != nil {
+		Fail(err.Error())
+	}
+	return []models.DeliveryMethod{
+		deliveryMethod1,
+		deliveryMethod2,
+		deliveryMethod3,
+	}
+}
+
 func CreatePaymentMethod() models.PaymentMethod {
 	paymentMethod := models.PaymentMethod{
 		Name:        "PayU",
@@ -152,6 +222,51 @@ func CreatePaymentMethod() models.PaymentMethod {
 		Fail(errWrapped.Error())
 	}
 	return paymentMethod
+}
+
+func CreateSomePaymentMethods() []models.PaymentMethod {
+	paymentMethod1 := models.PaymentMethod{
+		Name:        "PayUp",
+		Provider:    "PayUp",
+		PosId:       "57169243",
+		KeyMd5:      "15117b282328146ac6afebaa8acd80e7",
+		ClientId:    "768246287",
+		OauthSecret: "15111b282328646a6affecea8acdw0e7",
+	}
+	paymentMethod2 := models.PaymentMethod{
+		Name:        "PayPal",
+		Provider:    "PayPal",
+		PosId:       "572313404",
+		KeyMd5:      "151162342328146ac6afebaa8acd80e7",
+		ClientId:    "768245587",
+		OauthSecret: "15117b282328146a6affeaea8acdw0e7",
+	}
+	paymentMethod3 := models.PaymentMethod{
+		Name:        "Przelewy24",
+		Provider:    "Przelewy24",
+		PosId:       "57139260",
+		KeyMd5:      "15167b282328346ac6afebaa8acd80e7",
+		ClientId:    "768246687",
+		OauthSecret: "15116b282028146a6affecea8acdw0e7",
+	}
+	if err := paymentMethod1.Create(); err != nil {
+		errWrapped := errors.Wrap(err, "Creating paymentmethod1")
+		Fail(errWrapped.Error())
+	}
+	if err := paymentMethod2.Create(); err != nil {
+		errWrapped := errors.Wrap(err, "Creating paymentmethod2")
+		Fail(errWrapped.Error())
+	}
+	if err := paymentMethod3.Create(); err != nil {
+		errWrapped := errors.Wrap(err, "Creating epaymentmethod3")
+		Fail(errWrapped.Error())
+	}
+
+	return []models.PaymentMethod{
+		paymentMethod1,
+		paymentMethod2,
+		paymentMethod3,
+	}
 }
 
 func CreatePayment(pm *models.PaymentMethod) models.Payment {
@@ -198,8 +313,8 @@ func CreateCustomer() models.Customer {
 		PhoneNumber:  "123456789",
 		EmailAddress: "name@exmaple.com",
 		Employed:     false,
-		NIP:          "123-456-779",
-		Regon:        "1234324",
+		NIP:          "",
+		Regon:        "",
 	}
 	if err := customer.Create(); err != nil {
 		errWrapped := errors.Wrap(err, "Creating customer")
@@ -219,8 +334,8 @@ func CreateEmployedCustomer() models.Customer {
 		PhoneNumber:  "123456799",
 		EmailAddress: "master@exmaple.com",
 		Employed:     true,
-		NIP:          "",
-		Regon:        "",
+		NIP:          "123-456-779",
+		Regon:        "1234324",
 	}
 	if err := customer.Create(); err != nil {
 		errWrapped := errors.Wrap(err, "Creating employed customer")
