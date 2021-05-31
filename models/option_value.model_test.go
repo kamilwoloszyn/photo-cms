@@ -9,24 +9,20 @@ import (
 var _ = Describe("OptionValue model", func() {
 	var option models.Option
 	var optionValue models.OptionValue
-
 	BeforeEach(func() {
-		optionValue = CreateOptionValue()
-		option = CreateOption(&[]models.OptionValue{
-			optionValue,
-		})
-
+		option = CreateOption()
+		optionValue = CreateOptionValue(&option)
 	})
 
 	AfterEach(func() {
-		option.Delete()
 		optionValue.Delete()
+		option.Delete()
 	})
 
 	Describe("Basic crud testing", func() {
 		It("Should be in db", func() {
 			var obtainedOptionValue models.OptionValue
-			err := obtainedOptionValue.SetID(option.GetID())
+			err := obtainedOptionValue.SetID(optionValue.GetID())
 			Expect(err).To(BeNil())
 			err = obtainedOptionValue.FetchById()
 			Expect(err).To(BeNil())
