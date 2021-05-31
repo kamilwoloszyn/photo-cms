@@ -2,12 +2,12 @@ package models
 
 type PaymentMethod struct {
 	Base
-	Name        string
-	Provider    string
-	PosId       string
-	KeyMd5      string
-	ClientId    string
-	OauthSecret string
+	Name        string    `gorm:"not null"`
+	Provider    string    `gorm:"not null"`
+	PosId       string    `gorm:"not null"`
+	KeyMd5      string    `gorm:"not null"`
+	ClientId    string    `gorm:"not null"`
+	OauthSecret string    `gorm:"not null"`
 	Payment     []Payment `gorm:"foreignKey:PaymentMethodId"`
 }
 
