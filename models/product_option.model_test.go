@@ -31,6 +31,7 @@ var _ = Describe("Product Option test", func() {
 		category.Delete()
 		optionsValues.Delete()
 		option.Delete()
+		customer.Delete()
 	})
 	Context("Basic crud testing", func() {
 		It("Should be in db", func() {
