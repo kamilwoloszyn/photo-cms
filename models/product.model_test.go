@@ -18,10 +18,8 @@ var _ = Describe("Product model", func() {
 	BeforeEach(func() {
 		category = CreateCategory()
 		image = CreateImage()
-		optionValue = CreateOptionValue()
-		option = CreateOption(&[]models.OptionValue{
-			optionValue,
-		})
+		option = CreateOption()
+		optionValue = CreateOptionValue(&option)
 		customer = CreateCustomer()
 		product = CreateProductWithoutOrder(&category, &image, &customer)
 		productOption = CreateProductOption(&product, &optionValue)
