@@ -4,35 +4,56 @@ import "github.com/google/uuid"
 
 type ProductOption struct {
 	Base
-	OptionValueId uuid.UUID `gorm:"not null"`
-	ProductId     uuid.UUID `gorm:"not null"`
+	OptionValueId uuid.UUID
+	ProductId     uuid.UUID
 }
 
-func (p *ProductOption) Create() error {
+func (po *ProductOption) Create() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	return handler.Create(p).Error
+	return handler.Create(po).Error
 }
-func (p *ProductOption) Delete() error {
+func (po *ProductOption) Delete() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	return handler.Delete(p).Error
+	return handler.Delete(po).Error
 }
-func (p *ProductOption) FetchById() error {
+func (po *ProductOption) FetchById() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if len(p.ID) == 0 {
+	if len(po.ID) == 0 {
 		return ErrIdEmpty
 	}
-	return handler.First(p).Error
+	return handler.First(po).Error
 }
 
-func (p *ProductOption) UpdateAll() error {
+func (po *ProductOption) UpdateInstance() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	return handler.Save(p).Error
+	return handler.Save(po).Error
+}
+
+func (po *ProductOption) GetProductDetails() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	return nil
+}
+
+func (po *ProductOption) GetOptionValueDetails() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	return nil
+}
+
+func (po *ProductOption) GetOptionDetails() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	return nil
 }
