@@ -1,5 +1,7 @@
 package models
 
+import "github.com/pkg/errors"
+
 type PaymentMethod struct {
 	Base
 	Name        string    `gorm:"not null"`
@@ -11,33 +13,48 @@ type PaymentMethod struct {
 	Payment     []Payment `gorm:"foreignKey:PaymentMethodId"`
 }
 
-func (p *PaymentMethod) FetchByID() error {
+func (pm *PaymentMethod) FetchByID() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	return handler.First(p).Error
+	return handler.First(pm).Error
 }
 
-func (p *PaymentMethod) Delete() error {
+func (pm *PaymentMethod) Delete() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	return handler.Delete(p).Error
+	return handler.Delete(pm).Error
 }
 
-func (p *PaymentMethod) Create() error {
+func (pm *PaymentMethod) Create() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if len(p.ID) == 0 {
+	if len(pm.ID) == 0 {
 		return ErrIdEmpty
 	}
-	return handler.Create(p).Error
+	return handler.Create(pm).Error
 }
 
-func (p *PaymentMethod) UpdateAll() error {
+func (pm *PaymentMethod) UpdateInstance() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	return handler.Save(p).Error
+	return handler.Save(pm).Error
+}
+
+func (pm *PaymentMethod) AssignTo(p *Payment) error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	if pm.IsEmptyId() || p.IsEmptyId() {
+		return ErrIdEmpty
+	}
+	p.PaymentMethodId = pm.GetID()
+	if err := p.UpdateInstance(); err != nil {
+		errWrapped := errors.Wrap(err, "Updating instance Payment")
+		return errWrapped
+	}
+	return nil
 }
