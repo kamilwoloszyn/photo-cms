@@ -32,7 +32,7 @@ func (o *Option) Create() error {
 	return handler.Create(o).Error
 }
 
-func (o *Option) UpdateAll() error {
+func (o *Option) UpdateInstance() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
@@ -48,6 +48,20 @@ func (o *Option) GetOptionValues() error {
 		errWrapped := errors.Wrap(err, "GetOptionValues : Join tables")
 		return errWrapped
 	}
+	return nil
+}
 
+func (o *Option) AssignTo(ov *OptionValue) error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	if o.IsEmptyId() || ov.IsEmptyId() {
+		return ErrIdEmpty
+	}
+	ov.ID = o.GetID()
+	if err := ov.UpdateInstance(); err != nil {
+		errWrapped := errors.Wrap(err, "Updating instance")
+		return errWrapped
+	}
 	return nil
 }
