@@ -35,9 +35,38 @@ func (o *Order) FetchById() error {
 	return handler.Find(o).Error
 }
 
-func (o *Order) UpdateAll() error {
+func (o *Order) UpdateInstance() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
 	return handler.Save(o).Error
+}
+
+func (o *Order) GetProducts() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+
+	return nil
+}
+
+func (o *Order) AssignTo(p *Product) error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	return nil
+}
+
+func (o *Order) GetPaymentDetails(p *Payment) error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	return nil
+}
+
+func (o *Order) GetDeliveryDetails(d *Delivery) error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	return nil
 }
