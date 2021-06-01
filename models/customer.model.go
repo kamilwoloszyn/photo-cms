@@ -1,6 +1,9 @@
 package models
 
-import "github.com/google/uuid"
+import (
+	"github.com/google/uuid"
+	"github.com/pkg/errors"
+)
 
 type Customer struct {
 	Base
@@ -46,9 +49,39 @@ func (c *Customer) FetchById() error {
 
 }
 
-func (c *Customer) UpdateAll() error {
+func (c *Customer) UpdateInstance() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
 	return handler.Save(c).Error
+}
+
+func (c *Customer) GetProducts() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	if c.IsEmptyId() {
+		return ErrIdEmpty
+	}
+	tx := handler.Model(c).Select("customers.id,products.id,products.created_at,products.updated_at,products.deleted_at,products.unit_price,products.product_name,products.quantity,products.category_id,products.image_id,products.customer_id,products.order_id").Joins("left join products on products.customer_id=customer.id").Where("customers.id=?", c.GetID()).Find(&c.Products)
+
+	if tx.Error != nil {
+		return tx.Error
+	}
+	return nil
+}
+
+func (c *Customer) AssignTo(p *Product) error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	if c.IsEmptyId() || p.IsEmptyId() {
+		return ErrIdEmpty
+	}
+	p.CustomerId = c.GetID()
+	if err := p.UpdateInstance(); err != nil {
+		errWrapped := errors.Wrapf(err, "Updating instance customer -> product")
+		return errWrapped
+	}
+	return nil
 }
