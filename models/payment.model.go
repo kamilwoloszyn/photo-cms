@@ -40,9 +40,29 @@ func (p *Payment) FetchByID() error {
 	return handler.First(p).Error
 }
 
-func (p *Payment) UpdateAll() error {
+func (p *Payment) UpdateInstance() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
 	return handler.Save(p).Error
+}
+
+func (p *Payment) GetPaymentMethod() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	return nil
+}
+
+func (p *Payment) AssignTo(o *Order) error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	return nil
+}
+func (p *Payment) GetPaymentMethodDetails(pm *PaymentMethod) error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	return nil
 }
