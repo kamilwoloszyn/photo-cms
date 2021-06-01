@@ -38,6 +38,9 @@ func (b *Base) SetID(newId uuid.UUID) error {
 	b.ID = newId
 	return nil
 }
+func (b *Base) IsEmptyId() bool {
+	return len(b.ID) == 0
+}
 
 func (b *Base) SetCreatedAt(t time.Time) {
 	b.CreatedAt = t.String()
