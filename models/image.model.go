@@ -1,5 +1,9 @@
 package models
 
+import (
+	"github.com/pkg/errors"
+)
+
 type Image struct {
 	Base
 	Name     string `gorm:"not null"`
@@ -32,9 +36,24 @@ func (i *Image) Delete() error {
 	return handler.Delete(i).Error
 }
 
-func (i *Image) UpdateAll() error {
+func (i *Image) UpdateInstance() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
 	return handler.Save(i).Error
+}
+
+func (i *Image) AssignTo(p *Product) error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	if i.IsEmptyId() || p.IsEmptyId() {
+		return ErrIdEmpty
+	}
+	p.ImageId = i.GetID()
+	if err := p.UpdateInstance(); err != nil {
+		errWrapped := errors.Wrap(err, "Updating product instance")
+		return errWrapped
+	}
+	return nil
 }
