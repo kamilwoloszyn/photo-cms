@@ -26,7 +26,7 @@ func (p *Product) Delete() error {
 	}
 	return handler.Delete(p).Error
 }
-func (p *Product) UpdateAll() error {
+func (p *Product) UpdateInstance() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
@@ -41,10 +41,34 @@ func (p *Product) FetchByID() error {
 	}
 	return handler.First(p).Error
 }
-func (p *Product) AssignTo(o *Order) error {
-	if len(o.ID) == 0 {
-		return ErrIdEmpty
+func (p *Product) AssignTo(po *ProductOption) error {
+	if handler == nil {
+		return ErrHandlerNotFound
 	}
-	p.OrderId = o.GetID()
+	return nil
+}
+func (p *Product) GetCustomerDetails(c *Customer) error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	return nil
+}
+func (p *Product) GetOrderDetails(o *Order) error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	return nil
+}
+func (p *Product) GetCategoryDetails(c *Category) error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	return nil
+}
+
+func (p *Product) GetImageDetails(c *Category) error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
 	return nil
 }
