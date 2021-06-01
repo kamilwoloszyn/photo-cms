@@ -16,9 +16,9 @@ func Migrate(db *gorm.DB) error {
 		&models.Image{},
 		&models.Product{},
 		&models.Order{},
-		&models.ProductOption{},
 		&models.Option{},
 		&models.OptionValue{},
+		&models.ProductOption{},
 	); err != nil {
 		return err
 	}
