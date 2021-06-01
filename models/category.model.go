@@ -1,5 +1,7 @@
 package models
 
+import "github.com/pkg/errors"
+
 type Category struct {
 	Base
 	CategoryName string    `gorm:"not null"`
@@ -30,9 +32,24 @@ func (c *Category) Delete() error {
 	return handler.Delete(c).Error
 }
 
-func (c *Category) UpdateAll() error {
+func (c *Category) UpdateInstance() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
 	return handler.Save(c).Error
+}
+
+func (c *Category) AssignTo(p *Product) error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	if c.IsEmptyId() || p.IsEmptyId() {
+		return ErrIdEmpty
+	}
+	p.CategoryId = c.GetID()
+	if err := p.UpdateInstance(); err != nil {
+		errWrapped := errors.Wrap(err, "Update instance product")
+		return errWrapped
+	}
+	return nil
 }
