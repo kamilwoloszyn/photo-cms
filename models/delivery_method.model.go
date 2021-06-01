@@ -1,5 +1,9 @@
 package models
 
+import (
+	"github.com/pkg/errors"
+)
+
 type DeliveryMethod struct {
 	Base
 	Name       string     `gorm:"not null"`
@@ -7,34 +11,63 @@ type DeliveryMethod struct {
 	Delivery   []Delivery `gorm:"foreignKey:DeliveryMethodId"`
 }
 
-func (d *DeliveryMethod) Create() error {
+func (dm *DeliveryMethod) Create() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	return handler.Create(d).Error
+	return handler.Create(dm).Error
 
 }
 
-func (d *DeliveryMethod) Delete() error {
+func (dm *DeliveryMethod) Delete() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	return handler.Delete(d).Error
+	return handler.Delete(dm).Error
 }
 
-func (d *DeliveryMethod) FetchById() error {
+func (dm *DeliveryMethod) FetchById() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if len(d.ID) == 0 {
+	if len(dm.ID) == 0 {
 		return ErrIdEmpty
 	}
-	return handler.First(d).Error
+	return handler.First(dm).Error
 }
 
-func (d *DeliveryMethod) UpdateAll() error {
+func (dm *DeliveryMethod) UpdateInstance() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	return handler.Save(d).Error
+	return handler.Save(dm).Error
+}
+
+func (dm *DeliveryMethod) AssignTo(d *Delivery) error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	if dm.IsEmptyId() || d.IsEmptyId() {
+		return ErrIdEmpty
+	}
+	d.DeliveryMethodId = dm.GetID()
+	if err := d.UpdateInstance(); err != nil {
+		errWrapped := errors.Wrap(err, "Updating instance of delivery model")
+		return errWrapped
+	}
+	return nil
+}
+
+func (dm *DeliveryMethod) GetDeliveries() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	if dm.IsEmptyId() {
+		return ErrIdEmpty
+	}
+	tx := handler.Model(dm).Select("delivery_methods.id,deliveries.id,deliveries.shipped_via,deliveries.tracking_code,deliveries.destination_postal_code,deliveries.destination_country_region,deliveries.destination_address,deliveries.destination_city,deliveries.payment_method_id").Joins("left join deliveries on deliveries.delivery_method_id=delivery_methods.id").Where("delivery_methods.id=?", dm.GetID()).Find(&dm.Delivery)
+	if tx.Error != nil {
+		return tx.Error
+	}
+	return nil
 }
