@@ -1,6 +1,9 @@
 package models
 
-import "github.com/pkg/errors"
+import (
+	"github.com/kamilwoloszyn/photo-cms/pkg/checkers"
+	"github.com/pkg/errors"
+)
 
 type PaymentMethod struct {
 	Base
@@ -17,12 +20,18 @@ func (pm *PaymentMethod) FetchByID() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
+	if pm.IsEmptyId() {
+		return ErrIdEmpty
+	}
 	return handler.First(pm).Error
 }
 
 func (pm *PaymentMethod) Delete() error {
 	if handler == nil {
 		return ErrHandlerNotFound
+	}
+	if pm.IsEmptyId() {
+		return ErrIdEmpty
 	}
 	return handler.Delete(pm).Error
 }
@@ -31,7 +40,10 @@ func (pm *PaymentMethod) Create() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if len(pm.ID) == 0 {
+	if pm.IsEmptyId() {
+		return ErrIdEmpty
+	}
+	if payMethodId := checkers.UuidGeneric(pm.GetID()); payMethodId.IsEmpty() {
 		return ErrIdEmpty
 	}
 	return handler.Create(pm).Error
@@ -41,6 +53,9 @@ func (pm *PaymentMethod) UpdateInstance() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
+	if pm.IsEmptyId() {
+		return ErrIdEmpty
+	}
 	return handler.Save(pm).Error
 }
 
@@ -48,7 +63,7 @@ func (pm *PaymentMethod) AssignTo(p *Payment) error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if pm.IsEmptyId() || p.IsEmptyId() {
+	if pm.IsEmptyId() {
 		return ErrIdEmpty
 	}
 	p.PaymentMethodId = pm.GetID()
