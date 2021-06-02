@@ -25,9 +25,15 @@ func (inst UuidString) IsValid() bool {
 }
 
 func (inst UuidGeneric) IsEmpty() bool {
-	return len(inst) == 0
+	id := uuid.UUID(inst)
+	return id[0] == 0
 }
 
 func (inst UuidGeneric) IsValid() bool {
+	id := uuid.UUID(inst)
+	idStr := id.String()
+	if parsed, e := uuid.Parse(idStr); parsed[0] == 0 || e != nil {
+		return false
+	}
 	return true
 }
