@@ -15,6 +15,9 @@ func (dm *DeliveryMethod) Create() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
+	if dm.IsEmptyId() {
+		return ErrIdEmpty
+	}
 	return handler.Create(dm).Error
 
 }
@@ -23,6 +26,9 @@ func (dm *DeliveryMethod) Delete() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
+	if dm.IsEmptyId() {
+		return ErrIdEmpty
+	}
 	return handler.Delete(dm).Error
 }
 
@@ -30,7 +36,7 @@ func (dm *DeliveryMethod) FetchById() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if len(dm.ID) == 0 {
+	if dm.IsEmptyId() {
 		return ErrIdEmpty
 	}
 	return handler.First(dm).Error
@@ -40,6 +46,9 @@ func (dm *DeliveryMethod) UpdateInstance() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
+	if dm.IsEmptyId() {
+		return ErrIdEmpty
+	}
 	return handler.Save(dm).Error
 }
 
@@ -47,7 +56,7 @@ func (dm *DeliveryMethod) AssignTo(d *Delivery) error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if dm.IsEmptyId() || d.IsEmptyId() {
+	if dm.IsEmptyId() {
 		return ErrIdEmpty
 	}
 	d.DeliveryMethodId = dm.GetID()
