@@ -15,11 +15,17 @@ func (po *ProductOption) Create() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
+	if po.IsEmptyId() {
+		return ErrIdEmpty
+	}
 	return handler.Create(po).Error
 }
 func (po *ProductOption) Delete() error {
 	if handler == nil {
 		return ErrHandlerNotFound
+	}
+	if po.IsEmptyId() {
+		return ErrIdEmpty
 	}
 	return handler.Delete(po).Error
 }
@@ -27,7 +33,7 @@ func (po *ProductOption) FetchById() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if len(po.ID) == 0 {
+	if po.IsEmptyId() {
 		return ErrIdEmpty
 	}
 	return handler.First(po).Error
@@ -36,6 +42,9 @@ func (po *ProductOption) FetchById() error {
 func (po *ProductOption) UpdateInstance() error {
 	if handler == nil {
 		return ErrHandlerNotFound
+	}
+	if po.IsEmptyId() {
+		return ErrIdEmpty
 	}
 	return handler.Save(po).Error
 }
