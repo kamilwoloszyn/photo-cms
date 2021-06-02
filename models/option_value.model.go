@@ -17,6 +17,9 @@ func (o *OptionValue) FetchById() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
+	if o.IsEmptyId() {
+		return ErrIdEmpty
+	}
 	return handler.First(o).Error
 
 }
@@ -24,6 +27,9 @@ func (o *OptionValue) FetchById() error {
 func (o *OptionValue) Create() error {
 	if handler == nil {
 		return ErrHandlerNotFound
+	}
+	if o.IsEmptyId() {
+		return ErrIdEmpty
 	}
 	return handler.Create(o).Error
 }
@@ -42,6 +48,9 @@ func (o *OptionValue) UpdateInstance() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
+	if o.IsEmptyId() {
+		return ErrIdEmpty
+	}
 	return handler.Save(o).Error
 }
 
@@ -49,7 +58,7 @@ func (o *OptionValue) AssignTo(po *ProductOption) error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if o.IsEmptyId() || po.IsEmptyId() {
+	if o.IsEmptyId() {
 		return ErrIdEmpty
 	}
 	po.OptionValueId = o.GetID()
