@@ -16,12 +16,18 @@ func (i *Image) Create() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
+	if i.IsEmptyId() {
+		return ErrIdEmpty
+	}
 	return handler.Create(i).Error
 }
 
 func (i *Image) FetchById() error {
 	if handler == nil {
 		return ErrHandlerNotFound
+	}
+	if i.IsEmptyId() {
+		return ErrIdEmpty
 	}
 	return handler.First(i).Error
 }
@@ -30,7 +36,7 @@ func (i *Image) Delete() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if len(i.ID) == 0 {
+	if i.IsEmptyId() {
 		return ErrIdEmpty
 	}
 	return handler.Delete(i).Error
@@ -40,6 +46,9 @@ func (i *Image) UpdateInstance() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
+	if i.IsEmptyId() {
+		return ErrIdEmpty
+	}
 	return handler.Save(i).Error
 }
 
@@ -47,7 +56,7 @@ func (i *Image) AssignTo(p *Product) error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if i.IsEmptyId() || p.IsEmptyId() {
+	if i.IsEmptyId() {
 		return ErrIdEmpty
 	}
 	p.ImageId = i.GetID()
