@@ -1,6 +1,8 @@
 package models
 
-import "github.com/pkg/errors"
+import (
+	"github.com/pkg/errors"
+)
 
 type Option struct {
 	Base
@@ -12,12 +14,18 @@ func (o *Option) FetchById() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
+	if o.IsEmptyId() {
+		return ErrIdEmpty
+	}
 	return handler.First(o).Error
 }
 
 func (o *Option) Delete() error {
 	if handler == nil {
 		return ErrHandlerNotFound
+	}
+	if o.IsEmptyId() {
+		return ErrIdEmpty
 	}
 	return handler.Delete(o).Error
 }
@@ -26,7 +34,7 @@ func (o *Option) Create() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if len(o.ID) == 0 {
+	if o.IsEmptyId() {
 		return ErrIdEmpty
 	}
 	return handler.Create(o).Error
@@ -35,6 +43,9 @@ func (o *Option) Create() error {
 func (o *Option) UpdateInstance() error {
 	if handler == nil {
 		return ErrHandlerNotFound
+	}
+	if o.IsEmptyId() {
+		return ErrIdEmpty
 	}
 	return handler.Save(o).Error
 }
@@ -55,7 +66,7 @@ func (o *Option) AssignTo(ov *OptionValue) error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if o.IsEmptyId() || ov.IsEmptyId() {
+	if o.IsEmptyId() {
 		return ErrIdEmpty
 	}
 	ov.ID = o.GetID()
