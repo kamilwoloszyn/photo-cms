@@ -1,9 +1,9 @@
 package models
 
 import (
-	"github.com/pkg/errors"
-
 	"github.com/google/uuid"
+	"github.com/kamilwoloszyn/photo-cms/pkg/checkers"
+	"github.com/pkg/errors"
 )
 
 type Delivery struct {
@@ -23,12 +23,18 @@ func (d *Delivery) FetchById() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
+	if d.IsEmptyId() {
+		return ErrIdEmpty
+	}
 	return handler.First(d).Error
 }
 
 func (d *Delivery) Delete() error {
 	if handler == nil {
 		return ErrHandlerNotFound
+	}
+	if d.IsEmptyId() {
+		return ErrIdEmpty
 	}
 	return handler.Delete(d).Error
 }
@@ -47,14 +53,18 @@ func (d *Delivery) UpdateInstance() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
+	if d.IsEmptyId() {
+		return ErrIdEmpty
+	}
 	return handler.Save(d).Error
 }
 
 func (d *Delivery) GetDeliveryMethodDetails(deliveryMethod *DeliveryMethod) error {
+	deliveryMethodId := checkers.UuidGeneric(d.DeliveryMethodId)
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if d.IsEmptyId() || len(d.DeliveryMethodId) == 0 {
+	if deliveryMethodId.IsEmpty() {
 		return ErrIdEmpty
 	}
 	deliveryMethod.ID = d.GetID()
