@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/google/uuid"
+	"github.com/kamilwoloszyn/photo-cms/pkg/checkers"
 	"github.com/pkg/errors"
 )
 
@@ -25,15 +26,23 @@ func (c *Customer) Create() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-
+	if c.IsEmptyId() {
+		return ErrIdEmpty
+	}
 	return handler.Create(c).Error
 }
 func (c *Customer) Delete() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	if c.IsEmptyId() {
+		return ErrIdEmpty
+	}
 	return handler.Delete(c).Error
 }
 
 func (c *Customer) SetId(id uuid.UUID) {
-	if len(id) > 0 {
+	if newId := checkers.UuidGeneric(id); newId.IsValid() {
 		c.ID = id
 	}
 }
@@ -42,7 +51,7 @@ func (c *Customer) FetchById() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if len(c.ID) == 0 {
+	if c.IsEmptyId() {
 		return ErrIdEmpty
 	}
 	return handler.Find(c).Error
@@ -52,6 +61,9 @@ func (c *Customer) FetchById() error {
 func (c *Customer) UpdateInstance() error {
 	if handler == nil {
 		return ErrHandlerNotFound
+	}
+	if c.IsEmptyId() {
+		return ErrIdEmpty
 	}
 	return handler.Save(c).Error
 }
@@ -75,7 +87,7 @@ func (c *Customer) AssignTo(p *Product) error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if c.IsEmptyId() || p.IsEmptyId() {
+	if c.IsEmptyId() {
 		return ErrIdEmpty
 	}
 	p.CustomerId = c.GetID()
