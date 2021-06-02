@@ -13,6 +13,7 @@ var (
 	handler            *gorm.DB
 	ErrHandlerNotFound = errors.New("db is not connected")
 	ErrIdEmpty         = errors.New("id is required to fetching from model db")
+	ErrIdIncorrect     = errors.New("requied id is invalid")
 )
 
 func SetHandler(newHandler *gorm.DB) error {
