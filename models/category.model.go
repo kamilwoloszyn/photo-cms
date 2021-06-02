@@ -12,12 +12,18 @@ func (c *Category) FetchById() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
+	if c.IsEmptyId() {
+		return ErrIdEmpty
+	}
 	return handler.First(c).Error
 }
 
 func (c *Category) Create() error {
 	if handler == nil {
 		return ErrHandlerNotFound
+	}
+	if c.IsEmptyId() {
+		return ErrIdEmpty
 	}
 	return handler.Create(c).Error
 }
@@ -26,7 +32,7 @@ func (c *Category) Delete() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if len(c.ID) == 0 {
+	if c.IsEmptyId() {
 		return ErrIdEmpty
 	}
 	return handler.Delete(c).Error
@@ -36,6 +42,9 @@ func (c *Category) UpdateInstance() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
+	if c.IsEmptyId() {
+		return ErrIdEmpty
+	}
 	return handler.Save(c).Error
 }
 
@@ -43,7 +52,7 @@ func (c *Category) AssignTo(p *Product) error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if c.IsEmptyId() || p.IsEmptyId() {
+	if c.IsEmptyId() {
 		return ErrIdEmpty
 	}
 	p.CategoryId = c.GetID()
