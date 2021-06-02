@@ -5,9 +5,7 @@ import (
 
 	"github.com/kamilwoloszyn/photo-cms/configs"
 	"gorm.io/driver/postgres"
-	_ "gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	_ "gorm.io/gorm"
 )
 
 func Initialize(conf configs.DbConfig) (*gorm.DB, error) {
