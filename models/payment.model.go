@@ -21,12 +21,18 @@ func (p *Payment) Create() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
+	if p.IsEmptyId() {
+		return ErrIdEmpty
+	}
 	return handler.Create(p).Error
 }
 
 func (p *Payment) Delete() error {
 	if handler == nil {
 		return ErrHandlerNotFound
+	}
+	if p.IsEmptyId() {
+		return ErrIdEmpty
 	}
 	return handler.Delete(p).Error
 }
@@ -35,7 +41,7 @@ func (p *Payment) FetchByID() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if len(p.ID) == 0 {
+	if p.IsEmptyId() {
 		return ErrIdEmpty
 	}
 	return handler.First(p).Error
@@ -44,6 +50,9 @@ func (p *Payment) FetchByID() error {
 func (p *Payment) UpdateInstance() error {
 	if handler == nil {
 		return ErrHandlerNotFound
+	}
+	if p.IsEmptyId() {
+		return ErrIdEmpty
 	}
 	return handler.Save(p).Error
 }
@@ -67,7 +76,7 @@ func (p *Payment) AssignTo(o *Order) error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if p.IsEmptyId() || o.IsEmptyId() {
+	if p.IsEmptyId() {
 		return ErrIdEmpty
 	}
 	o.PaymentId = p.GetID()
