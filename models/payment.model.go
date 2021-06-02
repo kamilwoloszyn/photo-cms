@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/pkg/errors"
 )
 
 type Payment struct {
@@ -47,9 +48,17 @@ func (p *Payment) UpdateInstance() error {
 	return handler.Save(p).Error
 }
 
-func (p *Payment) GetPaymentMethod() error {
+func (p *Payment) GetPaymentMethodDetails(pm *PaymentMethod) error {
 	if handler == nil {
 		return ErrHandlerNotFound
+	}
+	if len(p.PaymentMethodId) == 0 {
+		return ErrIdEmpty
+	}
+	pm.SetID(p.PaymentMethodId)
+	if err := pm.FetchByID(); err != nil {
+		errWrapped := errors.Wrap(err, "Fetching payment method")
+		return errWrapped
 	}
 	return nil
 }
@@ -58,11 +67,13 @@ func (p *Payment) AssignTo(o *Order) error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	return nil
-}
-func (p *Payment) GetPaymentMethodDetails(pm *PaymentMethod) error {
-	if handler == nil {
-		return ErrHandlerNotFound
+	if p.IsEmptyId() || o.IsEmptyId() {
+		return ErrIdEmpty
+	}
+	o.PaymentId = p.GetID()
+	if err := o.UpdateInstance(); err != nil {
+		errWrapped := errors.Wrap(err, "Updating payment instance")
+		return errWrapped
 	}
 	return nil
 }
