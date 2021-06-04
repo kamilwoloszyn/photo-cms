@@ -16,12 +16,12 @@ var _ = Describe("Product Option test", func() {
 	var productOption models.ProductOption
 	BeforeEach(func() {
 		option = CreateOption()
-		optionsValues = CreateOptionValue(&option)
+		optionsValues = CreateOptionValue(option)
 		customer = CreateCustomer()
 		category = CreateCategory()
 		image = CreateImage()
-		product = CreateProductWithoutOrder(&category, &image, &customer)
-		productOption = CreateProductOption(&product, &optionsValues)
+		product = CreateProductWithoutOrder(category, image, &customer)
+		productOption = CreateProductOption(product, &optionsValues)
 	})
 
 	AfterEach(func() {

@@ -11,7 +11,7 @@ var _ = Describe("OptionValue model", func() {
 	var optionValue models.OptionValue
 	BeforeEach(func() {
 		option = CreateOption()
-		optionValue = CreateOptionValue(&option)
+		optionValue = CreateOptionValue(option)
 	})
 
 	AfterEach(func() {

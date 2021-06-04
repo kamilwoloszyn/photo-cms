@@ -19,10 +19,10 @@ var _ = Describe("Product model", func() {
 		category = CreateCategory()
 		image = CreateImage()
 		option = CreateOption()
-		optionValue = CreateOptionValue(&option)
+		optionValue = CreateOptionValue(option)
 		customer = CreateCustomer()
-		product = CreateProductWithoutOrder(&category, &image, &customer)
-		productOption = CreateProductOption(&product, &optionValue)
+		product = CreateProductWithoutOrder(category, image, &customer)
+		productOption = CreateProductOption(product, &optionValue)
 	})
 	AfterEach(func() {
 		productOption.Delete()
