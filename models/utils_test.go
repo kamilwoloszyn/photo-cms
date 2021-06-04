@@ -34,7 +34,7 @@ func CreateUserId() uuid.UUID {
 	return uuid.New()
 }
 
-func CreateOptionValue(o *models.Option) models.OptionValue {
+func CreateOptionValue(o models.Option) models.OptionValue {
 	sampleValue1 := models.OptionValue{
 		Value:      "Yellow",
 		ExtraPrice: 10.0,
@@ -48,7 +48,7 @@ func CreateOptionValue(o *models.Option) models.OptionValue {
 	return sampleValue1
 }
 
-func CreateCustomOptionValue(o *models.Option, ov *models.OptionValue) {
+func CreateCustomOptionValue(o models.Option, ov *models.OptionValue) {
 	ov.OptionId = o.GetID()
 	if err := ov.Create(); err != nil {
 		errWrapped := errors.Wrap(err, "Creating custom option value")
@@ -92,7 +92,7 @@ func CreateCustomCategory(c *models.Category) {
 	}
 }
 
-func CreateProductOption(p *models.Product, v *models.OptionValue) models.ProductOption {
+func CreateProductOption(p models.Product, v *models.OptionValue) models.ProductOption {
 	productOption := models.ProductOption{
 		ProductId:     p.GetID(),
 		OptionValueId: v.GetID(),
@@ -104,7 +104,7 @@ func CreateProductOption(p *models.Product, v *models.OptionValue) models.Produc
 	return productOption
 }
 
-func CreateCustomProductOption(p *models.Product, ov *models.OptionValue, po *models.ProductOption) {
+func CreateCustomProductOption(p models.Product, ov models.OptionValue, po *models.ProductOption) {
 	po.OptionValueId = ov.GetID()
 	po.ProductId = p.GetID()
 
@@ -175,7 +175,7 @@ func CreateCustomPaymentMethod(p *models.PaymentMethod) {
 	}
 }
 
-func CreatePayment(pm *models.PaymentMethod) models.Payment {
+func CreatePayment(pm models.PaymentMethod) models.Payment {
 	t := time.Now()
 	payment := models.Payment{
 		PaymentDate:     &t,
@@ -190,7 +190,7 @@ func CreatePayment(pm *models.PaymentMethod) models.Payment {
 	}
 	return payment
 }
-func CreateCustomPayment(pm *models.PaymentMethod, p *models.Payment) {
+func CreateCustomPayment(pm models.PaymentMethod, p *models.Payment) {
 	time := time.Now()
 	p.PaymentMethodId = pm.GetID()
 	p.PaymentDate = &time
@@ -200,7 +200,7 @@ func CreateCustomPayment(pm *models.PaymentMethod, p *models.Payment) {
 	}
 }
 
-func CreateDelivery(dm *models.DeliveryMethod) models.Delivery {
+func CreateDelivery(dm models.DeliveryMethod) models.Delivery {
 	delivery := models.Delivery{
 		ShippedVia:               "Michal",
 		TrackingCode:             "123793472742342",
@@ -216,7 +216,7 @@ func CreateDelivery(dm *models.DeliveryMethod) models.Delivery {
 	}
 	return delivery
 }
-func CreateCustomDelivery(dm *models.DeliveryMethod, d *models.Delivery) {
+func CreateCustomDelivery(dm models.DeliveryMethod, d *models.Delivery) {
 	d.DeliveryMethodId = dm.GetID()
 	if err := d.Create(); err != nil {
 		errWrapped := errors.Wrap(err, "Creating custom delivery")
@@ -252,7 +252,7 @@ func CreateCustomCustomer(c *models.Customer) {
 	}
 }
 
-func CreateProductWithoutOrder(category *models.Category, image *models.Image, customer *models.Customer) models.Product {
+func CreateProductWithoutOrder(category models.Category, image models.Image, customer *models.Customer) models.Product {
 	product := models.Product{
 		UnitPrice:   0,
 		ProductName: "sample_image",
@@ -267,7 +267,7 @@ func CreateProductWithoutOrder(category *models.Category, image *models.Image, c
 	}
 	return product
 }
-func CreateCustomProductWithoutOrder(category *models.Category, image *models.Image, customer *models.Customer, p *models.Product) {
+func CreateCustomProductWithoutOrder(category models.Category, image models.Image, customer models.Customer, p *models.Product) {
 	p.CategoryId = category.GetID()
 	p.ImageId = image.GetID()
 	p.CustomerId = customer.GetID()
@@ -278,7 +278,7 @@ func CreateCustomProductWithoutOrder(category *models.Category, image *models.Im
 	}
 }
 
-func CreateOrder(p *models.Payment, d *models.Delivery) models.Order {
+func CreateOrder(p models.Payment, d models.Delivery) models.Order {
 	order := models.Order{
 		Fvat:       true,
 		Price:      320,
@@ -292,7 +292,7 @@ func CreateOrder(p *models.Payment, d *models.Delivery) models.Order {
 	return order
 }
 
-func CreateCustomOrder(p *models.Payment, d *models.Delivery, o *models.Order) {
+func CreateCustomOrder(p models.Payment, d models.Delivery, o *models.Order) {
 	o.PaymentId = p.GetID()
 	o.DeliveryId = d.GetID()
 
@@ -302,7 +302,7 @@ func CreateCustomOrder(p *models.Payment, d *models.Delivery, o *models.Order) {
 	}
 }
 
-func CreateProductWithOrder(c *models.Category, i *models.Image, customer *models.Customer, o *models.Order) models.Product {
+func CreateProductWithOrder(c models.Category, i models.Image, customer models.Customer, o models.Order) models.Product {
 	product := models.Product{
 		UnitPrice:   0,
 		ProductName: "sample_image",
@@ -319,7 +319,7 @@ func CreateProductWithOrder(c *models.Category, i *models.Image, customer *model
 	return product
 }
 
-func CreateCustomProductWithOrder(c *models.Category, i *models.Image, cs *models.Customer, o *models.Order, p *models.Product) {
+func CreateCustomProductWithOrder(c models.Category, i models.Image, cs models.Customer, o models.Order, p *models.Product) {
 	p.CategoryId = c.GetID()
 	p.ImageId = i.GetID()
 	p.CustomerId = cs.GetID()
