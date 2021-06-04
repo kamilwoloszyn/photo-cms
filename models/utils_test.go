@@ -30,40 +30,8 @@ func ConnectToDatabase() error {
 	return nil
 }
 
-func CreateUserId() string {
-	return uuid.NewString()
-}
-
-func CreateOptionValues() []models.OptionValue {
-	sampleValue1 := models.OptionValue{
-		Value:      "Black",
-		ExtraPrice: 10.0,
-	}
-
-	sampleValue2 := models.OptionValue{
-		Value:      "Red",
-		ExtraPrice: 11.0,
-	}
-
-	sampleValue3 := models.OptionValue{
-		Value:      "White",
-		ExtraPrice: 12.0,
-	}
-	if err := sampleValue1.Create(); err != nil {
-		errWrapped := errors.Wrap(err, "Creating Option value1")
-		Fail(errWrapped.Error())
-	}
-
-	if err := sampleValue2.Create(); err != nil {
-		errWrapped := errors.Wrap(err, "Creating Option value2")
-		Fail(errWrapped.Error())
-	}
-
-	if err := sampleValue3.Create(); err != nil {
-		errWrapped := errors.Wrap(err, "Creating Option value3")
-		Fail(errWrapped.Error())
-	}
-	return []models.OptionValue{sampleValue1, sampleValue2, sampleValue3}
+func CreateUserId() uuid.UUID {
+	return uuid.New()
 }
 
 func CreateOptionValue(o *models.Option) models.OptionValue {
@@ -80,42 +48,11 @@ func CreateOptionValue(o *models.Option) models.OptionValue {
 	return sampleValue1
 }
 
-func CreateSomeOptionValues(o *models.Option) []models.OptionValue {
-	sampleValue1 := models.OptionValue{
-		Value:      "Red",
-		ExtraPrice: 10.0,
-		OptionId:   o.GetID(),
-	}
-	sampleValue2 := models.OptionValue{
-		Value:      "Green",
-		ExtraPrice: 10.0,
-		OptionId:   o.GetID(),
-	}
-	sampleValue3 := models.OptionValue{
-		Value:      "Blue",
-		ExtraPrice: 10.0,
-		OptionId:   o.GetID(),
-	}
-
-	if err := sampleValue1.Create(); err != nil {
-		errWrapped := errors.Wrap(err, "Creating option value1")
+func CreateCustomOptionValue(o *models.Option, ov *models.OptionValue) {
+	ov.OptionId = o.GetID()
+	if err := ov.Create(); err != nil {
+		errWrapped := errors.Wrap(err, "Creating custom option value")
 		Fail(errWrapped.Error())
-	}
-
-	if err := sampleValue2.Create(); err != nil {
-		errWrapped := errors.Wrap(err, "Creating option value2")
-		Fail(errWrapped.Error())
-	}
-
-	if err := sampleValue3.Create(); err != nil {
-		errWrapped := errors.Wrap(err, "Creating option value3")
-		Fail(errWrapped.Error())
-	}
-
-	return []models.OptionValue{
-		sampleValue1,
-		sampleValue2,
-		sampleValue3,
 	}
 }
 
@@ -130,6 +67,13 @@ func CreateOption() models.Option {
 	return sampleOption
 }
 
+func CreateCustomOption(opt *models.Option) {
+	if err := opt.Create(); err != nil {
+		errWrapped := errors.Wrap(err, "Creating custom option")
+		Fail(errWrapped.Error())
+	}
+}
+
 func CreateCategory() models.Category {
 	sampleCategory := models.Category{
 		CategoryName: "Odbitki",
@@ -140,6 +84,14 @@ func CreateCategory() models.Category {
 	}
 	return sampleCategory
 }
+
+func CreateCustomCategory(c *models.Category) {
+	if err := c.Create(); err != nil {
+		errWrapped := errors.Wrap(err, "Creating custom category")
+		Fail(errWrapped.Error())
+	}
+}
+
 func CreateProductOption(p *models.Product, v *models.OptionValue) models.ProductOption {
 	productOption := models.ProductOption{
 		ProductId:     p.GetID(),
@@ -152,6 +104,15 @@ func CreateProductOption(p *models.Product, v *models.OptionValue) models.Produc
 	return productOption
 }
 
+func CreateCustomProductOption(p *models.Product, ov *models.OptionValue, po *models.ProductOption) {
+	po.OptionValueId = ov.GetID()
+	po.ProductId = p.GetID()
+
+	if err := po.Create(); err != nil {
+		errWrapped := errors.Wrap(err, "Creating custom product option")
+		Fail(errWrapped.Error())
+	}
+}
 func CreateImage() models.Image {
 	sampleImage := models.Image{
 		Name:     "generated_img",
@@ -163,6 +124,13 @@ func CreateImage() models.Image {
 		Fail(errWrapped.Error())
 	}
 	return sampleImage
+}
+
+func CreateCustomImage(i *models.Image) {
+	if err := i.Create(); err != nil {
+		errWrapped := errors.Wrap(err, "Creating custom image")
+		Fail(errWrapped.Error())
+	}
 }
 
 func CreateDeliveryMethod() models.DeliveryMethod {
@@ -177,34 +145,10 @@ func CreateDeliveryMethod() models.DeliveryMethod {
 	return deliveryMethod
 }
 
-func CreateSomeDeliveryMethods() []models.DeliveryMethod {
-	deliveryMethod1 := models.DeliveryMethod{
-		Name:       "InPost",
-		FixedPirce: 8.99,
-	}
-	deliveryMethod2 := models.DeliveryMethod{
-		Name:       "InPost",
-		FixedPirce: 8.99,
-	}
-
-	deliveryMethod3 := models.DeliveryMethod{
-		Name:       "InPost",
-		FixedPirce: 8.99,
-	}
-
-	if err := deliveryMethod1.Create(); err != nil {
-		Fail(err.Error())
-	}
-	if err := deliveryMethod2.Create(); err != nil {
-		Fail(err.Error())
-	}
-	if err := deliveryMethod3.Create(); err != nil {
-		Fail(err.Error())
-	}
-	return []models.DeliveryMethod{
-		deliveryMethod1,
-		deliveryMethod2,
-		deliveryMethod3,
+func CreateCustomDeliveryMethod(d *models.DeliveryMethod) {
+	if err := d.Create(); err != nil {
+		errWrapped := errors.Wrap(err, "Creating custom delivery method")
+		Fail(errWrapped.Error())
 	}
 }
 
@@ -224,48 +168,10 @@ func CreatePaymentMethod() models.PaymentMethod {
 	return paymentMethod
 }
 
-func CreateSomePaymentMethods() []models.PaymentMethod {
-	paymentMethod1 := models.PaymentMethod{
-		Name:        "PayUp",
-		Provider:    "PayUp",
-		PosId:       "57169243",
-		KeyMd5:      "15117b282328146ac6afebaa8acd80e7",
-		ClientId:    "768246287",
-		OauthSecret: "15111b282328646a6affecea8acdw0e7",
-	}
-	paymentMethod2 := models.PaymentMethod{
-		Name:        "PayPal",
-		Provider:    "PayPal",
-		PosId:       "572313404",
-		KeyMd5:      "151162342328146ac6afebaa8acd80e7",
-		ClientId:    "768245587",
-		OauthSecret: "15117b282328146a6affeaea8acdw0e7",
-	}
-	paymentMethod3 := models.PaymentMethod{
-		Name:        "Przelewy24",
-		Provider:    "Przelewy24",
-		PosId:       "57139260",
-		KeyMd5:      "15167b282328346ac6afebaa8acd80e7",
-		ClientId:    "768246687",
-		OauthSecret: "15116b282028146a6affecea8acdw0e7",
-	}
-	if err := paymentMethod1.Create(); err != nil {
-		errWrapped := errors.Wrap(err, "Creating paymentmethod1")
+func CreateCustomPaymentMethod(p *models.PaymentMethod) {
+	if err := p.Create(); err != nil {
+		errWrapped := errors.Wrap(err, "Creating custom payment method")
 		Fail(errWrapped.Error())
-	}
-	if err := paymentMethod2.Create(); err != nil {
-		errWrapped := errors.Wrap(err, "Creating paymentmethod2")
-		Fail(errWrapped.Error())
-	}
-	if err := paymentMethod3.Create(); err != nil {
-		errWrapped := errors.Wrap(err, "Creating epaymentmethod3")
-		Fail(errWrapped.Error())
-	}
-
-	return []models.PaymentMethod{
-		paymentMethod1,
-		paymentMethod2,
-		paymentMethod3,
 	}
 }
 
@@ -284,6 +190,15 @@ func CreatePayment(pm *models.PaymentMethod) models.Payment {
 	}
 	return payment
 }
+func CreateCustomPayment(pm *models.PaymentMethod, p *models.Payment) {
+	time := time.Now()
+	p.PaymentMethodId = pm.GetID()
+	p.PaymentDate = &time
+	if err := p.Create(); err != nil {
+		errWrapped := errors.Wrap(err, "Creating custom payment")
+		Fail(errWrapped.Error())
+	}
+}
 
 func CreateDelivery(dm *models.DeliveryMethod) models.Delivery {
 	delivery := models.Delivery{
@@ -300,6 +215,13 @@ func CreateDelivery(dm *models.DeliveryMethod) models.Delivery {
 		Fail(errWrapped.Error())
 	}
 	return delivery
+}
+func CreateCustomDelivery(dm *models.DeliveryMethod, d *models.Delivery) {
+	d.DeliveryMethodId = dm.GetID()
+	if err := d.Create(); err != nil {
+		errWrapped := errors.Wrap(err, "Creating custom delivery")
+		Fail(errWrapped.Error())
+	}
 }
 
 func CreateCustomer() models.Customer {
@@ -323,26 +245,13 @@ func CreateCustomer() models.Customer {
 	return customer
 }
 
-func CreateEmployedCustomer() models.Customer {
-	customer := models.Customer{
-		City:         "Oleszyce",
-		Address:      "Zamkowa 100/11",
-		LastName:     "Kowalski",
-		FirstName:    "Jan",
-		PostalCode:   "37-630",
-		CompanyName:  "ABB",
-		PhoneNumber:  "123456799",
-		EmailAddress: "master@exmaple.com",
-		Employed:     true,
-		NIP:          "123-456-779",
-		Regon:        "1234324",
-	}
-	if err := customer.Create(); err != nil {
-		errWrapped := errors.Wrap(err, "Creating employed customer")
+func CreateCustomCustomer(c *models.Customer) {
+	if err := c.Create(); err != nil {
+		errWrapped := errors.Wrap(err, "Creating custom customer")
 		Fail(errWrapped.Error())
 	}
-	return customer
 }
+
 func CreateProductWithoutOrder(category *models.Category, image *models.Image, customer *models.Customer) models.Product {
 	product := models.Product{
 		UnitPrice:   0,
@@ -358,6 +267,16 @@ func CreateProductWithoutOrder(category *models.Category, image *models.Image, c
 	}
 	return product
 }
+func CreateCustomProductWithoutOrder(category *models.Category, image *models.Image, customer *models.Customer, p *models.Product) {
+	p.CategoryId = category.GetID()
+	p.ImageId = image.GetID()
+	p.CustomerId = customer.GetID()
+
+	if err := p.Create(); err != nil {
+		errWrapped := errors.Wrap(err, "Creating custom category withou order")
+		Fail(errWrapped.Error())
+	}
+}
 
 func CreateOrder(p *models.Payment, d *models.Delivery) models.Order {
 	order := models.Order{
@@ -371,6 +290,16 @@ func CreateOrder(p *models.Payment, d *models.Delivery) models.Order {
 		Fail(errWarpped.Error())
 	}
 	return order
+}
+
+func CreateCustomOrder(p *models.Payment, d *models.Delivery, o *models.Order) {
+	o.PaymentId = p.GetID()
+	o.DeliveryId = d.GetID()
+
+	if err := o.Create(); err != nil {
+		errWrapped := errors.Wrap(err, "Creating custom order")
+		Fail(errWrapped.Error())
+	}
 }
 
 func CreateProductWithOrder(c *models.Category, i *models.Image, customer *models.Customer, o *models.Order) models.Product {
@@ -388,4 +317,16 @@ func CreateProductWithOrder(c *models.Category, i *models.Image, customer *model
 		Fail(errWrapped.Error())
 	}
 	return product
+}
+
+func CreateCustomProductWithOrder(c *models.Category, i *models.Image, cs *models.Customer, o *models.Order, p *models.Product) {
+	p.CategoryId = c.GetID()
+	p.ImageId = i.GetID()
+	p.CustomerId = cs.GetID()
+	p.OrderId = o.GetID()
+
+	if err := p.Create(); err != nil {
+		errWrapped := errors.Wrap(err, "Creating custom product without order")
+		Fail(errWrapped.Error())
+	}
 }
