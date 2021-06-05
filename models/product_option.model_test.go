@@ -20,7 +20,7 @@ var _ = Describe("Product Option test", func() {
 		customer = CreateCustomer()
 		category = CreateCategory()
 		image = CreateImage()
-		product = CreateProductWithoutOrder(category, image, &customer)
+		product = CreateProductWithoutOrder(category, image, customer)
 		productOption = CreateProductOption(product, &optionsValues)
 	})
 

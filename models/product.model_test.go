@@ -21,7 +21,7 @@ var _ = Describe("Product model", func() {
 		option = CreateOption()
 		optionValue = CreateOptionValue(option)
 		customer = CreateCustomer()
-		product = CreateProductWithoutOrder(category, image, &customer)
+		product = CreateProductWithoutOrder(category, image, customer)
 		productOption = CreateProductOption(product, &optionValue)
 	})
 	AfterEach(func() {
