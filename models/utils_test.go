@@ -136,7 +136,7 @@ func CreateCustomImage(i *models.Image) {
 func CreateDeliveryMethod() models.DeliveryMethod {
 	deliveryMethod := models.DeliveryMethod{
 		Name:       "InPost",
-		FixedPirce: 8.99,
+		FixedPrice: 8.99,
 	}
 	if err := deliveryMethod.Create(); err != nil {
 		errWrapped := errors.Wrap(err, "Creating delivery Methods")
@@ -205,7 +205,7 @@ func CreateDelivery(dm models.DeliveryMethod) models.Delivery {
 		ShippedVia:               "Michal",
 		TrackingCode:             "123793472742342",
 		DestinationPostalCode:    "37-630",
-		DestinationConturyRegion: "Podkarpackie",
+		DestinationCountryRegion: "Podkarpackie",
 		DestinationAddress:       "Zamkowa 100/10",
 		DestinationCity:          "Oleszyce",
 		DeliveryMethodId:         dm.GetID(),
@@ -252,7 +252,7 @@ func CreateCustomCustomer(c *models.Customer) {
 	}
 }
 
-func CreateProductWithoutOrder(category models.Category, image models.Image, customer *models.Customer) models.Product {
+func CreateProductWithoutOrder(category models.Category, image models.Image, customer models.Customer) models.Product {
 	product := models.Product{
 		UnitPrice:   0,
 		ProductName: "sample_image",
