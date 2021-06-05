@@ -62,3 +62,14 @@ func (c *Category) AssignTo(p *Product) error {
 	}
 	return nil
 }
+
+func (c *Category) FetchProducts() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	if tx := handler.Model(c).Select("categories.id,products.category_id,products.id,products.created_at,products.updated_at,products.deleted_at,products.unit_price,products.product_name,products.quantity,products.image_id,products.customer_id,products.order_id").Joins("left join products on products.category_id=categories.id").Where("categories.id=?", c.GetID()).Find(&c.Product); tx.Error != nil {
+		errWrapped := errors.Wrap(tx.Error, "Fetching products connected to category")
+		return errWrapped
+	}
+	return nil
+}
