@@ -9,19 +9,13 @@ import (
 var _ = Describe("Option model test", func() {
 
 	var optionVal models.OptionValue
-	var optionsVal []models.OptionValue
+	var anotherOptionVal models.OptionValue
 	var option models.Option
 
 	BeforeEach(func() {
 		option = CreateOption()
-		optionVal = CreateOptionValue(&option)
-		optionsVal = CreateSomeOptionValues(&option)
 	})
 	AfterEach(func() {
-		optionVal.Delete()
-		for _, opVal := range optionsVal {
-			opVal.Delete()
-		}
 		option.Delete()
 
 	})
@@ -38,6 +32,21 @@ var _ = Describe("Option model test", func() {
 
 	})
 	Describe("Relationship test", func() {
+
+		BeforeEach(func() {
+			optionVal = CreateOptionValue(option)
+			anotherOptionVal = models.OptionValue{
+				Value:      "Pink",
+				ExtraPrice: 13,
+			}
+			CreateCustomOptionValue(option, &anotherOptionVal)
+		})
+
+		AfterEach(func() {
+			optionVal.Delete()
+			anotherOptionVal.Delete()
+		})
+
 		Context("One value", func() {
 			It("Should be into db", func() {
 				err := option.GetOptionValues()
