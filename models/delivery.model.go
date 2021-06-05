@@ -11,7 +11,7 @@ type Delivery struct {
 	ShippedVia               string `gorm:"not null"`
 	TrackingCode             string
 	DestinationPostalCode    string `gorm:"not null"`
-	DestinationConturyRegion string
+	DestinationCountryRegion string
 	DestinationAddress       string `gorm:"not null"`
 	DestinationCity          string `gorm:"not null"`
 	PaymentMethodId          uuid.UUID
