@@ -75,7 +75,7 @@ func (c *Customer) GetProducts() error {
 	if c.IsEmptyId() {
 		return ErrIdEmpty
 	}
-	tx := handler.Model(c).Select("customers.id,products.id,products.created_at,products.updated_at,products.deleted_at,products.unit_price,products.product_name,products.quantity,products.category_id,products.image_id,products.customer_id,products.order_id").Joins("left join products on products.customer_id=customer.id").Where("customers.id=?", c.GetID()).Find(&c.Products)
+	tx := handler.Model(c).Select("customers.id,products.id,products.created_at,products.updated_at,products.deleted_at,products.unit_price,products.product_name,products.quantity,products.category_id,products.image_id,products.customer_id,products.order_id").Joins("left join products on products.customer_id=customers.id").Where("customers.id=?", c.GetID()).Find(&c.Products)
 
 	if tx.Error != nil {
 		return tx.Error
