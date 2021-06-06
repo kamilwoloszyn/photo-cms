@@ -1,7 +1,6 @@
 package models
 
 import (
-	"github.com/kamilwoloszyn/photo-cms/pkg/checkers"
 	"github.com/pkg/errors"
 )
 
@@ -39,12 +38,6 @@ func (pm *PaymentMethod) Delete() error {
 func (pm *PaymentMethod) Create() error {
 	if handler == nil {
 		return ErrHandlerNotFound
-	}
-	if pm.IsEmptyId() {
-		return ErrIdEmpty
-	}
-	if payMethodId := checkers.UuidGeneric(pm.GetID()); payMethodId.IsEmpty() {
-		return ErrIdEmpty
 	}
 	return handler.Create(pm).Error
 }
