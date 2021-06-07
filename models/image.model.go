@@ -66,3 +66,15 @@ func (i *Image) AssignTo(p *Product) error {
 	}
 	return nil
 }
+
+func (i *Image) GetProduct() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	tx := handler.Model(i).Select("images.id,products.id,products.created_at,products.updated_at,products.deleted_at,products.unit_price,products.product_name,products.quantity,products.category_id,products.image_id,products.customer_id,products.order_id").Joins("left join products on products.image_id=images.id").Where("images.id=?", i.GetID()).Find(&i.Product)
+	if tx != nil {
+		errWrapped := errors.Wrap(tx.Error, "Joining image with products")
+		return errWrapped
+	}
+	return nil
+}
