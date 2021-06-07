@@ -8,7 +8,11 @@ import (
 )
 
 var _ = Describe("DeliveryMethod model", func() {
-	var deliveryMethod models.DeliveryMethod
+	var (
+		deliveryMethod  models.DeliveryMethod
+		delivery        models.Delivery
+		anotherDelivery models.Delivery
+	)
 	BeforeEach(func() {
 		deliveryMethod = CreateDeliveryMethod()
 	})
@@ -51,10 +55,6 @@ var _ = Describe("DeliveryMethod model", func() {
 		})
 	})
 	Describe("Relationship tests", func() {
-		var (
-			delivery        models.Delivery
-			anotherDelivery models.Delivery
-		)
 		BeforeEach(func() {
 			delivery = CreateDelivery(deliveryMethod)
 		})
@@ -82,6 +82,9 @@ var _ = Describe("DeliveryMethod model", func() {
 			})
 			AfterEach(func() {
 				anotherDelivery.Delete()
+				delivery.Delete()
+				deliveryMethod.Delete()
+
 			})
 			It("Should get two deliveries", func() {
 				err := deliveryMethod.GetDeliveries()
