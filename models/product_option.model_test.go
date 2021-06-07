@@ -21,7 +21,7 @@ var _ = Describe("Product Option test", func() {
 		category = CreateCategory()
 		image = CreateImage()
 		product = CreateProductWithoutOrder(category, image, customer)
-		productOption = CreateProductOption(product, &optionsValues)
+		productOption = CreateProductOption(product, optionsValues)
 	})
 
 	AfterEach(func() {
