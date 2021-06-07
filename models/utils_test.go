@@ -92,7 +92,7 @@ func CreateCustomCategory(c *models.Category) {
 	}
 }
 
-func CreateProductOption(p models.Product, v *models.OptionValue) models.ProductOption {
+func CreateProductOption(p models.Product, v models.OptionValue) models.ProductOption {
 	productOption := models.ProductOption{
 		ProductId:     p.GetID(),
 		OptionValueId: v.GetID(),
