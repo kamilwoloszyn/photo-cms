@@ -72,6 +72,8 @@ var _ = Describe("Delivery model", func() {
 		})
 		AfterEach(func() {
 			order.Delete()
+			payment.Delete()
+			paymentMethod.Delete()
 		})
 		Context("One order", func() {
 			It("Should fetch exactly one order", func() {
