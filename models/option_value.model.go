@@ -76,7 +76,7 @@ func (o *OptionValue) GetProductOptions() error {
 	if o.IsEmptyId() {
 		return ErrIdEmpty
 	}
-	tx := handler.Model(o).Select("options_values.id,product_options.id,product_options.product_id,product_options.option_value_id").Joins("left join product_options on product_options.option_value_id=options_values.id").Where("options_values.id=?", o.GetID()).Find(&o.ProductOption)
+	tx := handler.Model(o).Select("option_values.id,product_options.id,product_options.product_id,product_options.option_value_id").Joins("left join product_options on product_options.option_value_id=option_values.id").Where("option_values.id=?", o.GetID()).Find(&o.ProductOption)
 	if tx.Error != nil {
 		errWrapped := errors.Wrap(tx.Error, "Join OptionValue with ProductOption")
 		return errWrapped
