@@ -95,7 +95,7 @@ func (o *Order) GetPaymentDetails(p *Payment) error {
 		return ErrIdEmpty
 	}
 	p.SetID(o.PaymentId)
-	if err := p.UpdateInstance(); err != nil {
+	if err := p.FetchByID(); err != nil {
 		errWrapped := errors.Wrap(err, "Fetching product instance")
 		return errWrapped
 	}
