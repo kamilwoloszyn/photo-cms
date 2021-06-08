@@ -14,7 +14,7 @@ type Payment struct {
 	PaymentError    bool    `gorm:"default:false"`
 	PaymentFinished bool    `gorm:"default:false"`
 	PaymentMethodId uuid.UUID
-	Order           []Order `gorm:"foreignKey:PaymentId"`
+	Order           Order `gorm:"foreignKey:PaymentId"`
 }
 
 func (p *Payment) Create() error {
@@ -82,6 +82,18 @@ func (p *Payment) AssignTo(o *Order) error {
 	o.PaymentId = p.GetID()
 	if err := o.UpdateInstance(); err != nil {
 		errWrapped := errors.Wrap(err, "Updating payment instance")
+		return errWrapped
+	}
+	return nil
+}
+
+func (p *Payment) GetOrders() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	tx := handler.Model(p).Select("payments.id,orders.id,orders.created_at,orders.updated_at,orders.deleted_at,orders.fvat,orders.price,orders.payment_id,orders.delivery_id").Joins("left join orders on orders.payment_id=payments.id").Where("payments.id=?", p.GetID()).Find(&p.Order)
+	if tx.Error != nil {
+		errWrapped := errors.Wrap(tx.Error, "Getting orders")
 		return errWrapped
 	}
 	return nil
