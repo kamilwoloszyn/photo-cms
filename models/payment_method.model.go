@@ -66,3 +66,19 @@ func (pm *PaymentMethod) AssignTo(p *Payment) error {
 	}
 	return nil
 }
+
+func (pm *PaymentMethod) GetPayments() error {
+	if handler == nil {
+		return ErrHandlerNotFound
+	}
+	if pm.IsEmptyId() {
+		return ErrIdEmpty
+	}
+
+	tx := handler.Model(pm).Select("payment_methods.id,payments.id,payments.created_at,payments.updated_at,payments.deleted_at,payments.payment_date,payments.payment_amount,payments.payment_error,payments.payment_finished,payments.payment_method_id").Joins("left join payments on payments.payment_method_id=payment_methods.id").Where("payment_methods.id=?", pm.GetID()).Find(&pm.Payment)
+	if tx.Error != nil {
+		errWrapped := errors.Wrap(tx.Error, "Getting payment methods")
+		return errWrapped
+	}
+	return nil
+}
