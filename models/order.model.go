@@ -8,10 +8,10 @@ import (
 
 type Order struct {
 	Base
-	Fvat       bool    `gorm:"default:false"`
-	Price      float32 `gorm:"not null"`
-	PaymentId  uuid.UUID
-	DeliveryId uuid.UUID
+	Fvat       bool      `gorm:"default:false"`
+	Price      float32   `gorm:"not null"`
+	PaymentId  uuid.UUID `gorm:"default:null"`
+	DeliveryId uuid.UUID `gorm:"default:null"`
 	Product    []Product `gorm:"foreignKey:OrderId"`
 }
 
