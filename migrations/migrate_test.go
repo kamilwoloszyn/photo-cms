@@ -13,7 +13,7 @@ var _ = Describe("Db Automigrate", func() {
 
 	BeforeEach(func() {
 		err := models.ConnectDB()
-		Expect(err).To(BeNil())
+		Expect(err).ShouldNot(HaveOccurred())
 		db = models.GetHandler()
 	})
 
@@ -24,7 +24,7 @@ var _ = Describe("Db Automigrate", func() {
 	Describe("Migration into db", func() {
 		It("Should migrate into db", func() {
 			err := migrations.Migrate(db)
-			Expect(err).To(BeNil())
+			Expect(err).ShouldNot(HaveOccurred())
 		})
 	})
 
