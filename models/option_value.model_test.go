@@ -99,7 +99,7 @@ var _ = Describe("OptionValue model", func() {
 			customer = CreateCustomer()
 			product = CreateProductWithoutOrder(category, image, customer)
 			CreateCustomImage(&image2)
-			CreateCustomProductWithoutOrder(category, image, customer, &product2)
+			CreateCustomProductWithoutOrder(category, image2, customer, &product2)
 			productOption = CreateProductOption(product, optionValue)
 			productOption2 = CreateProductOption(product2, optionValue)
 		})
@@ -122,7 +122,6 @@ var _ = Describe("OptionValue model", func() {
 				Expect(err).NotTo(HaveOccurred())
 				Expect(len(optionValue.ProductOption)).To(Equal(2))
 			})
-
 		})
 	})
 })
