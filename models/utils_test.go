@@ -254,7 +254,7 @@ func CreateCustomCustomer(c *models.Customer) {
 
 func CreateProductWithoutOrder(category models.Category, image models.Image, customer models.Customer) models.Product {
 	product := models.Product{
-		UnitPrice:   0,
+		UnitPrice:   15,
 		ProductName: "sample_image",
 		CategoryId:  category.GetID(),
 		ImageId:     image.GetID(),
@@ -282,8 +282,8 @@ func CreateOrder(p models.Payment, d models.Delivery) models.Order {
 	order := models.Order{
 		Fvat:       true,
 		Price:      320,
-		PaymentId:  p.GetID(),
-		DeliveryId: d.GetID(),
+		PaymentId:  p.GetRefID(),
+		DeliveryId: d.GetRefID(),
 	}
 	if err := order.Create(); err != nil {
 		errWarpped := errors.Wrap(err, "Creating order")
@@ -293,8 +293,8 @@ func CreateOrder(p models.Payment, d models.Delivery) models.Order {
 }
 
 func CreateCustomOrder(p models.Payment, d models.Delivery, o *models.Order) {
-	o.PaymentId = p.GetID()
-	o.DeliveryId = d.GetID()
+	o.PaymentId = p.GetRefID()
+	o.DeliveryId = d.GetRefID()
 
 	if err := o.Create(); err != nil {
 		errWrapped := errors.Wrap(err, "Creating custom order")
@@ -304,12 +304,12 @@ func CreateCustomOrder(p models.Payment, d models.Delivery, o *models.Order) {
 
 func CreateProductWithOrder(c models.Category, i models.Image, customer models.Customer, o models.Order) models.Product {
 	product := models.Product{
-		UnitPrice:   0,
+		UnitPrice:   15,
 		ProductName: "sample_image",
 		CategoryId:  c.GetID(),
 		ImageId:     i.GetID(),
 		CustomerId:  customer.GetID(),
-		OrderId:     o.ID,
+		OrderId:     o.GetRefID(),
 		Quantity:    3,
 	}
 	if err := product.Create(); err != nil {
@@ -323,7 +323,7 @@ func CreateCustomProductWithOrder(c models.Category, i models.Image, cs models.C
 	p.CategoryId = c.GetID()
 	p.ImageId = i.GetID()
 	p.CustomerId = cs.GetID()
-	p.OrderId = o.GetID()
+	p.OrderId = o.GetRefID()
 
 	if err := p.Create(); err != nil {
 		errWrapped := errors.Wrap(err, "Creating custom product without order")
