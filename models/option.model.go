@@ -34,9 +34,7 @@ func (o *Option) Create() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if o.IsEmptyId() {
-		return ErrIdEmpty
-	}
+
 	return handler.Create(o).Error
 }
 
