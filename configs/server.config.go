@@ -15,7 +15,7 @@ type Server struct {
 	Routes *gin.RouterGroup
 }
 
-func New() (*Server, error) {
+func NewServer() (*Server, error) {
 
 	dbConfig, err := LoadDbConfig()
 	if err != nil {
@@ -36,15 +36,4 @@ func New() (*Server, error) {
 
 func (s *Server) Listen() error {
 	return s.Engine.Run()
-}
-
-func (s *Server) ApplyRoutes() {
-	s.Routes = s.Engine.Group("api")
-	{
-		s.Routes.GET("/ping")
-		s.Routes.POST("/login")
-		s.Routes.POST("/registration")
-		s.Routes.GET("/dashboard")
-		s.Routes.POST("/dashboard/upload")
-	}
 }
