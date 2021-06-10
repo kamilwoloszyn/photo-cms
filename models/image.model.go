@@ -16,9 +16,6 @@ func (i *Image) Create() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if i.IsEmptyId() {
-		return ErrIdEmpty
-	}
 	return handler.Create(i).Error
 }
 

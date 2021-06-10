@@ -1,22 +1,18 @@
 package models
 
 import (
-	"github.com/google/uuid"
 	"github.com/pkg/errors"
 )
 
 type ProductOption struct {
 	Base
-	OptionValueId uuid.UUID
-	ProductId     uuid.UUID
+	OptionValueId string `gorm:"type:uuid;not null"`
+	ProductId     string `gorm:"type:uuid;not null"`
 }
 
 func (po *ProductOption) Create() error {
 	if handler == nil {
 		return ErrHandlerNotFound
-	}
-	if po.IsEmptyId() {
-		return ErrIdEmpty
 	}
 	return handler.Create(po).Error
 }

@@ -1,7 +1,6 @@
 package models_test
 
 import (
-	"github.com/google/uuid"
 	"github.com/kamilwoloszyn/photo-cms/models"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -90,7 +89,7 @@ var _ = Describe("Order Model", func() {
 				Expect(err).ShouldNot(HaveOccurred())
 				err = obtainedOrder.FetchById()
 				Expect(err).ShouldNot(HaveOccurred())
-				Expect(obtainedOrder.PaymentId).To(Equal(uuid.Nil))
+				Expect(obtainedOrder.PaymentId).To(BeNil())
 			})
 		})
 
@@ -142,7 +141,7 @@ var _ = Describe("Order Model", func() {
 				fetchedPayment models.Payment
 			)
 			It("Should fetch correct details of payment", func() {
-				err := checkerPayment.SetID(order.PaymentId)
+				err := checkerPayment.SetID(*order.PaymentId)
 				Expect(err).ShouldNot(HaveOccurred())
 				err = checkerPayment.FetchByID()
 				Expect(err).ShouldNot(HaveOccurred())
@@ -160,7 +159,7 @@ var _ = Describe("Order Model", func() {
 				fetchedDelivery models.Delivery
 			)
 			It("Should fetch correct details of delivery", func() {
-				err := checkerDelivery.SetID(order.DeliveryId)
+				err := checkerDelivery.SetID(*order.DeliveryId)
 				Expect(err).ShouldNot(HaveOccurred())
 				err = checkerDelivery.FetchById()
 				Expect(err).ShouldNot(HaveOccurred())

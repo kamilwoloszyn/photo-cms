@@ -22,9 +22,6 @@ func (c *Category) Create() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if c.IsEmptyId() {
-		return ErrIdEmpty
-	}
 	return handler.Create(c).Error
 }
 

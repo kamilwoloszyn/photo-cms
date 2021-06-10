@@ -1,7 +1,6 @@
 package models
 
 import (
-	"github.com/google/uuid"
 	"github.com/pkg/errors"
 )
 
@@ -9,7 +8,7 @@ type OptionValue struct {
 	Base
 	Value         string
 	ExtraPrice    float32
-	OptionId      uuid.UUID
+	OptionId      string          `gorm:"type:uuid;not null"`
 	ProductOption []ProductOption `gorm:"foreginKey:OptionValueId"`
 }
 
@@ -28,9 +27,7 @@ func (o *OptionValue) Create() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if o.IsEmptyId() {
-		return ErrIdEmpty
-	}
+
 	return handler.Create(o).Error
 }
 

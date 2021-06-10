@@ -1,7 +1,6 @@
 package models
 
 import (
-	"github.com/google/uuid"
 	"github.com/kamilwoloszyn/photo-cms/pkg/checkers"
 	"github.com/pkg/errors"
 )
@@ -26,9 +25,6 @@ func (c *Customer) Create() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if c.IsEmptyId() {
-		return ErrIdEmpty
-	}
 	return handler.Create(c).Error
 }
 func (c *Customer) Delete() error {
@@ -41,8 +37,8 @@ func (c *Customer) Delete() error {
 	return handler.Delete(c).Error
 }
 
-func (c *Customer) SetId(id uuid.UUID) {
-	if newId := checkers.UuidGeneric(id); newId.IsValid() {
+func (c *Customer) SetId(id string) {
+	if newId := checkers.UuidString(id); newId.IsValid() {
 		c.ID = id
 	}
 }

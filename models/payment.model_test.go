@@ -1,7 +1,6 @@
 package models_test
 
 import (
-	"github.com/google/uuid"
 	"github.com/kamilwoloszyn/photo-cms/models"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -57,7 +56,7 @@ var _ = Describe("Payment model", func() {
 				Expect(err).ShouldNot(HaveOccurred())
 				err = obtainedPayment.FetchByID()
 				Expect(err).To(Equal(gorm.ErrRecordNotFound))
-				Expect(obtainedPayment.PaymentMethodId).To(Equal(uuid.Nil))
+				Expect(obtainedPayment.PaymentMethodId).To(Equal(""))
 			})
 		})
 

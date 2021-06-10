@@ -3,7 +3,6 @@ package models
 import (
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/pkg/errors"
 )
 
@@ -13,16 +12,13 @@ type Payment struct {
 	PaymentAmount   float32 `gorm:"not null"`
 	PaymentError    bool    `gorm:"default:false"`
 	PaymentFinished bool    `gorm:"default:false"`
-	PaymentMethodId uuid.UUID
-	Order           Order `gorm:"foreignKey:PaymentId"`
+	PaymentMethodId string  `gorm:"type:uuid;default:null"`
+	Order           Order   `gorm:"foreignKey:PaymentId"`
 }
 
 func (p *Payment) Create() error {
 	if handler == nil {
 		return ErrHandlerNotFound
-	}
-	if p.IsEmptyId() {
-		return ErrIdEmpty
 	}
 	return handler.Create(p).Error
 }
@@ -79,7 +75,8 @@ func (p *Payment) AssignTo(o *Order) error {
 	if p.IsEmptyId() {
 		return ErrIdEmpty
 	}
-	o.PaymentId = p.GetID()
+	paymentId := p.GetID()
+	o.PaymentId = &paymentId
 	if err := o.UpdateInstance(); err != nil {
 		errWrapped := errors.Wrap(err, "Updating payment instance")
 		return errWrapped

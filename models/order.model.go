@@ -1,7 +1,6 @@
 package models
 
 import (
-	"github.com/google/uuid"
 	"github.com/kamilwoloszyn/photo-cms/pkg/checkers"
 	"github.com/pkg/errors"
 )
@@ -10,8 +9,8 @@ type Order struct {
 	Base
 	Fvat       bool      `gorm:"default:false"`
 	Price      float32   `gorm:"not null"`
-	PaymentId  uuid.UUID `gorm:"default:null"`
-	DeliveryId uuid.UUID `gorm:"default:null"`
+	PaymentId  *string   `gorm:"type:uuid;default:null"`
+	DeliveryId *string   `gorm:"type:uuid;default:null"`
 	Product    []Product `gorm:"foreignKey:OrderId"`
 }
 
@@ -29,9 +28,7 @@ func (o *Order) Create() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if o.IsEmptyId() {
-		return ErrIdEmpty
-	}
+
 	return handler.Create(o).Error
 }
 
@@ -79,7 +76,7 @@ func (o *Order) AssignTo(p *Product) error {
 	if o.IsEmptyId() {
 		return ErrIdEmpty
 	}
-	p.OrderId = o.GetID()
+	p.OrderId = o.GetRefID()
 	if err := p.UpdateInstance(); err != nil {
 		errWrapped := errors.Wrap(err, "Updating order instance")
 		return errWrapped
@@ -91,10 +88,10 @@ func (o *Order) GetPaymentDetails(p *Payment) error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if paymentId := checkers.UuidGeneric(o.PaymentId); paymentId.IsEmpty() {
+	if paymentId := checkers.UuidString(*o.PaymentId); paymentId.IsEmpty() {
 		return ErrIdEmpty
 	}
-	p.SetID(o.PaymentId)
+	p.SetID(*o.PaymentId)
 	if err := p.FetchByID(); err != nil {
 		errWrapped := errors.Wrap(err, "Fetching product instance")
 		return errWrapped
@@ -106,10 +103,10 @@ func (o *Order) GetDeliveryDetails(d *Delivery) error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if deliveryId := checkers.UuidGeneric(o.DeliveryId); deliveryId.IsEmpty() {
+	if deliveryId := checkers.UuidString(*o.DeliveryId); deliveryId.IsEmpty() {
 		return ErrIdEmpty
 	}
-	d.SetID(o.DeliveryId)
+	d.SetID(*o.DeliveryId)
 	if err := d.FetchById(); err != nil {
 		errWrapped := errors.Wrap(err, "Fetching Delivery")
 		return errWrapped

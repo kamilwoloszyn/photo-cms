@@ -1,7 +1,6 @@
 package models
 
 import (
-	"github.com/google/uuid"
 	"github.com/kamilwoloszyn/photo-cms/pkg/checkers"
 	"github.com/pkg/errors"
 )
@@ -12,10 +11,9 @@ type Delivery struct {
 	TrackingCode             string
 	DestinationPostalCode    string `gorm:"not null"`
 	DestinationCountryRegion string
-	DestinationAddress       string `gorm:"not null"`
-	DestinationCity          string `gorm:"not null"`
-	PaymentMethodId          uuid.UUID
-	DeliveryMethodId         uuid.UUID
+	DestinationAddress       string  `gorm:"not null"`
+	DestinationCity          string  `gorm:"not null"`
+	DeliveryMethodId         string  `gorm:"type:uuid;not null"`
 	Order                    []Order `gorm:"foreignKey:DeliveryId"`
 }
 
@@ -43,9 +41,6 @@ func (d *Delivery) Create() error {
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
-	if d.IsEmptyId() {
-		return ErrIdEmpty
-	}
 	return handler.Create(d).Error
 }
 
@@ -60,7 +55,7 @@ func (d *Delivery) UpdateInstance() error {
 }
 
 func (d *Delivery) GetDeliveryMethodDetails(deliveryMethod *DeliveryMethod) error {
-	deliveryMethodId := checkers.UuidGeneric(d.DeliveryMethodId)
+	deliveryMethodId := checkers.UuidString(d.DeliveryMethodId)
 	if handler == nil {
 		return ErrHandlerNotFound
 	}
