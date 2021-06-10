@@ -2,20 +2,26 @@ package handlers
 
 import "github.com/gin-gonic/gin"
 
-func PingHandler(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "ok",
-	})
+func LoginHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+	}
 }
 
-func AddPaperTypeHandler(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "added",
-	})
+func RegistrationHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+	}
 }
 
-func DeletePaperTypeHandler(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "removed",
-	})
+func RecoveryHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+	}
+}
+
+func LogoutHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+	}
 }
